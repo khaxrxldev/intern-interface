@@ -1,0 +1,1 @@
+<ngb-alert #alert *ngIf="alertStatus" [type]="alertType" (closed)="alertStatus = false; onClose.emit()">{{ alertText }}</ngb-alert>

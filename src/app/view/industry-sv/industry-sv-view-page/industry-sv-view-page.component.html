@@ -1,0 +1,63 @@
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3"></div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-5 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Supervisor Details</b>
+    </div>
+    <div *ngIf="industrySupervisor && companies" class="w-100 p-2 border-top bg-white">
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Full name</label>
+          <input type="text" class="form-control form-control-sm" [value]="industrySupervisor.industrySvName" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Password</label>
+          <input type="text" class="form-control form-control-sm" [value]="industrySupervisor.industrySvPassword" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Email</label>
+          <input type="text" class="form-control form-control-sm" [value]="industrySupervisor.industrySvEmail" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Phone number</label>
+          <input type="text" class="form-control form-control-sm" [value]="industrySupervisor.industrySvPhone" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Gender</label>
+          <select class="form-select form-select-sm" [value]="industrySupervisor.industrySvGender" disabled>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+          </select>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Position</label>
+          <input type="text" class="form-control form-control-sm" [value]="industrySupervisor.industrySvPosition" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Company</label>
+          <select class="form-select form-select-sm" [value]="industrySupervisor.companyId" disabled>
+            <ng-container *ngFor="let company of companies">
+              <option [selected]="company.companyId == industrySupervisor.companyId" [value]="company.companyId">{{ company.companyName }}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="col-lg-6 col-12"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Student List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white overflow-auto">
+      <app-industry-sv-student-datatable></app-industry-sv-student-datatable>
+    </div>
+  </div>
+</div>

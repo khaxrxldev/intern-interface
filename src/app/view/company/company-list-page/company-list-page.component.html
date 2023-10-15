@@ -1,0 +1,175 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Company</h4>
+    <div class="sub-header">Manage company's detail and person <br> in charge information</div>
+  </div>
+  <div class="w-100 p-2 border-start border-5">
+    <b>Chart</b>
+  </div>
+  <div class="col-12 p-2 border-bottom border-top bg-white overflow-auto">
+    <div class="card">
+      <div class="card-header p-2">
+        <select (change)="setChart($event)" class="form-select form-select-sm w-auto">
+          <option value="STD">STUDENT</option>
+          <option value="SPV">SUPERVISOR</option>
+        </select>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item py-3 px-2">
+          <div class="form-label m-0" *ngIf="chartTypeDisplay === 'STD'">Total student with <b>Ongoing</b> status on the left, <b>Completed</b> status on the right</div>
+          <div class="form-label m-0" *ngIf="chartTypeDisplay === 'SPV'">Total <b>Supervisor</b> from each company</div>
+        </li>
+        <li class="list-group-item p-4">
+          <google-chart style="width: 100%; min-width: 900px;" [type]="chartType" [data]="chartData" [options]="chartOptions" [columns]="chartColumns"></google-chart>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-7 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Company List</b>
+      <app-button-group (click)="datatable.downloadTable()" style="margin-top: -4px;" class="float-end" [btnTxt]="'Export'" [btnIcn]="'fa-file-excel-o'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+    </div>
+    <div class="w-100 p-2 border-top bg-white overflow-auto">
+      <app-company-datatable #datatable (onUpdate)="onSetForm($event); company = $event" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.companyId"></app-company-datatable>
+    </div>
+  </div>
+  <div class="col-lg-5 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Company Details</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <form [formGroup]="companyFormGroup" (ngSubmit)="onSubmitForm(companyBrochure)">
+        <div class="card">
+          <div class="card-header">
+            <b>Company</b>
+          </div>
+          <div class="card-body p-2">
+            <div class="row g-2 py-1">
+              <div class="col-lg-6 col-12">
+                <input type="text" formControlName="companyId" id="companyId" hidden>
+                <label for="companyName" class="form-label mb-1">Name</label>
+                <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="companyName" id="companyName" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyName', 'required', submitStatus)}">
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyName', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyName', 'required')">Company name is required</span>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <label for="companyWebsite" class="form-label mb-1">Website</label>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">https://</span>
+                  <input type="text" class="form-control form-control-sm" formControlName="companyWebsite" id="companyWebsite">
+                  <button type="button" *ngIf="company.companyWebsite" (click)="appUtilityService.onOpenURLNewWindow(company.companyWebsite!)" class="input-group-text">
+                    <i class="fa fa-expand fw-bold"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 py-1">
+              <div class="col-lg-6 col-12">
+                <label for="companyEmail" class="form-label mb-1">Email</label>
+                <input type="text" class="form-control form-control-sm" formControlName="companyEmail" id="companyEmail" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyEmail', 'email', submitStatus)}">
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyEmail', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyEmail', 'email')">Invalid email pattern</span>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <label for="companyPhone" class="form-label mb-1">Phone number</label>
+                <input type="text" class="form-control form-control-sm" formControlName="companyPhone" id="companyPhone">
+              </div>
+            </div>
+            <div class="row g-2 py-1">
+              <div class="col-lg-12 col-12">
+                <label for="companyAddress" class="form-label mb-1">Address</label>
+                <textarea oninput="this.value = this.value.toUpperCase()" formControlName="companyAddress" id="companyAddress" class="form-control form-control-sm textarea-no-resize" rows="5" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyAddress', 'required', submitStatus)}"></textarea>
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyAddress', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyAddress', 'required')">Company address is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-0 pt-1">
+              <div class="col-lg-3 col-12">
+                <label for="companyBrochure" class="form-label mt-5px">Brochure</label>
+              </div>
+              <div class="col-lg-9 col-12">
+                <div class="input-group input-group-sm">
+                  <input #companyBrochure type="file" class="form-control" formControlName="companyBrochure" id="companyBrochure" accept="application/pdf" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyBrochure', 'invalidFileType', submitStatus)}">
+                  <button type="button" *ngIf="company.companyBrochure" (click)="appUtilityService.onDisplayFile(company.companyBrochure!)" class="input-group-text">
+                    <i class="fa fa-expand fw-bold"></i>
+                  </button>
+                  <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyBrochure', submitStatus)" class="form-label-error w-100 mt-1">
+                    <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyBrochure', 'invalidFileType')">Invalid file type</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-2">
+          <div class="card-header">
+            <b>Person in Charge</b>
+          </div>
+          <div class="card-body p-2">
+            <div class="row g-2 py-1">
+              <div class="col-lg-6 col-12">
+                <label for="companyHrName" class="form-label mb-1">Name</label>
+                <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="companyHrName" id="companyHrName" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyHrName', 'required', submitStatus)}">
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyHrName', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyHrName', 'required')">Name is required</span>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <label for="companyHrGender" class="form-label mb-1">Gender</label>
+                <select class="form-select form-select-sm" formControlName="companyHrGender" id="companyHrGender" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyHrGender', 'required', submitStatus)}">
+                  <option value="" selected hidden></option>
+                  <option value="MALE">MALE</option>
+                  <option value="FEMALE">FEMALE</option>
+                </select>
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyHrGender', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyHrGender', 'required')">Gender is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 pt-1">
+              <div class="col-lg-6 col-12">
+                <label for="companyHrPhone" class="form-label mb-1">Phone</label>
+                <input type="text" class="form-control form-control-sm" formControlName="companyHrPhone" id="companyHrPhone" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyHrPhone', 'required', submitStatus)}">
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyHrPhone', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyHrPhone', 'required')">Phone is required</span>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <label for="companyHrEmail" class="form-label mb-1">Email</label>
+                <input type="text" class="form-control form-control-sm" formControlName="companyHrEmail" id="companyHrEmail" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(companyFormGroup, 'companyHrEmail', 'required', submitStatus) || appUtilityService.checkFormGroupValid(companyFormGroup, 'companyHrEmail', 'email', submitStatus)}">
+                <div *ngIf="appUtilityService.checkFormGroupSubmitted(companyFormGroup, 'companyHrEmail', submitStatus)" class="form-label-error w-100 mt-1">
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyHrEmail', 'required')">Email is required</span>
+                  <span *ngIf="appUtilityService.checkFormGroupHasError(companyFormGroup, 'companyHrEmail', 'email')">Invalid email pattern</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row g-0 py-1">
+          <div class="col-lg-6 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <app-button-group class="float-end"  [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+            <app-button-group (onClick)="submitStatus = false; company = {}" class="float-end me-2" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-modal #modal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to delete?
+    <input type="text" #deleteId hidden>
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="modal.close(); deleteId.value = ''" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    <app-button-group class="m-1" (click)="onConfirmDelete(deleteId.value)" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>

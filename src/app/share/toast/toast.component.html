@@ -1,0 +1,8 @@
+<div class="alert position-fixed top-1 end-0 mt-1 me-1 opacity-75" [ngClass]="toastAlertType" *ngIf="toastStatus">
+  <div class="row g-0">
+    <div [ngClass]="[toastTextColor, 'alert-text', 'col-11']">{{ toastText }}</div>
+    <div class="col-1">
+      <button type="button" class="btn-close position-fixed end-0 mx-3" (click)="close()"></button>
+    </div>
+  </div>
+</div>

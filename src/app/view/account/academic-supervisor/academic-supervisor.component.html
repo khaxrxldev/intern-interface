@@ -1,0 +1,91 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Account</h4>
+    <div class="sub-header">Manage account information</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-6 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Account Details</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <form *ngIf="academicSV$ | async" [formGroup]="academicSvFormGroup" (ngSubmit)="onSubmitForm()">
+        <div class="row g-2 py-1">
+          <div class="col-lg-3 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <input type="text" formControlName="supervisorId" id="supervisorId" hidden>
+            <label for="supervisorCoordinator" class="form-label mb-1">Category</label>
+            <select class="form-select form-select-sm" formControlName="supervisorCoordinator" id="supervisorCoordinator" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorCoordinator', 'required', true)}">
+              <option value="" selected hidden></option>
+              <option value="1">COORDINATOR</option>
+              <option value="0">LECTURER</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorCoordinator', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorCoordinator', 'required')">Category is required</span>
+            </div>
+          </div>
+          <div class="col-lg-3 col-12"></div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="supervisorName" class="form-label mb-1">Full name</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="supervisorName" id="supervisorName" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorName', 'required', true)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorName', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorName', 'required')">Name is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPassword" class="form-label mb-1">Password</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorPassword" id="supervisorPassword" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorPassword', 'required', true)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorPassword', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorPassword', 'required')">Password is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="supervisorEmail" class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorEmail" id="supervisorEmail" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorEmail', 'required', true) || appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorEmail', 'email', true)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorEmail', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorEmail', 'required')">Email is required</span>
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorEmail', 'email')">Invalid email pattern</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPhone" class="form-label mb-1">Phone number</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorPhone" id="supervisorPhone" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorPhone', 'required', true)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorPhone', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorPhone', 'required')">Phone number is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="supervisorGender" class="form-label mb-1">Gender</label>
+            <select class="form-select form-select-sm" formControlName="supervisorGender" id="supervisorGender" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(academicSvFormGroup, 'supervisorGender', 'required', true)}">
+              <option value="" selected hidden></option>
+              <option value="MALE">MALE</option>
+              <option value="FEMALE">FEMALE</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(academicSvFormGroup, 'supervisorGender', true)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(academicSvFormGroup, 'supervisorGender', 'required')">Gender is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPosition" class="form-label mb-1">Position</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="supervisorPosition" id="supervisorPosition">
+          </div>
+        </div>
+        <div class="row g-0 py-1">
+          <div class="col-lg-6 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <app-button-group class="float-end" [btnType]="'submit'" [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+            <app-button-group class="float-end me-2" (onClick)="getAcademicSV()" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-6 col-12 content-col-str border"></div>
+</div>

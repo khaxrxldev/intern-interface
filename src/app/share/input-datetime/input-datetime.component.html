@@ -1,0 +1,8 @@
+<div class="select">
+  <input #input (change)="setInputValue(input.value)" autocomplete="off" [id]="inputId" [type]="inputType" [disabled]="inputDisable" [value]="inputValue" [placeholder]="inputPlaceholder" [min]="inputMin" [max]="inputMax" [ngClass]="['form-control', 'form-control-sm', inputBorderRadius, inputInvalidStatus]" (focus)="selectContentStatus = !selectContentStatus">
+  <div [ngStyle]="{'display': selectContentStatus ? 'block' : 'none' }" class="select-content">
+    <ng-container *ngFor="let option of optionArray">
+      <div class="select-option" (click)="setInputValue(option)">{{ option }}</div>
+    </ng-container>
+  </div>
+</div>

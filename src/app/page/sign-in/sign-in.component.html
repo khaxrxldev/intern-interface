@@ -1,0 +1,39 @@
+<nav id="topnav" class="navbar navbar-style bg-secondary w-100">
+	<div class="container-fluid">
+		<a class="navbar-brand" routerLink="">
+			<img src="../../../assets/images/UITM_LOGO.png" alt="UiTM Logo" width="20">
+		</a>
+		<ul class="navbar-nav me-auto"></ul>
+		<div class="btn-group" role="group">
+			<button (click)="router.navigate(['/signup'])" type="button" class="btn">Register</button>
+		</div>
+	</div>
+</nav>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+	<li class="w-25pct" [ngbNavItem]="1">
+		<button class="nav-buttons" ngbNavLink>Coordinator</button>
+		<ng-template ngbNavContent>
+      <app-signin-form [userType]="'COD'" [userEmail]="'afni@uitm.com.my'" [userPassword]="'password'"></app-signin-form>
+    </ng-template>
+	</li>
+	<li class="w-25pct" [ngbNavItem]="2">
+		<button class="nav-buttons" ngbNavLink>Academic Supervisor</button>
+		<ng-template ngbNavContent>
+      <app-signin-form [userType]="'ACD'" [userEmail]="'edzreena@uitm.com.my'" [userPassword]="'password'"></app-signin-form>
+    </ng-template>
+	</li>
+	<li class="w-25pct" [ngbNavItem]="3">
+		<button class="nav-buttons" ngbNavLink>Industry Supervisor</button>
+		<ng-template ngbNavContent>
+      <app-signin-form [userType]="'IND'" [userEmail]="'rahimi@heitech.com.my'" [userPassword]="'password'"></app-signin-form>
+    </ng-template>
+	</li>
+	<li class="w-25pct" [ngbNavItem]="4">
+		<button class="nav-buttons" ngbNavLink>Student Signin</button>
+		<ng-template ngbNavContent>
+      <app-signin-form [userType]="'STD'" [userEmail]="'khairil@gmail.com.my'" [userPassword]="'password'"></app-signin-form>
+    </ng-template>
+	</li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="nav-content bg-white border-bottom border-start border-end"></div>

@@ -1,0 +1,133 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Supervisor</h4>
+    <div class="sub-header">Manage industry supervisor detail <br> information</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-7 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Supervisor List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white"><div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item p-1">
+          <div class="row g-1">
+            <div class="col-lg-3 col-12">
+              <div class="input-group">
+                <select #companySelect [ngClass]="{'filter-success': companySelect.value}" class="form-select form-select-sm" (change)="datatable.reRender()">
+                  <option value="" selected hidden>Company</option>
+                  <ng-container *ngIf="companies.length">
+                    <option *ngFor="let company of companies" [value]="company.companyId">{{ company.companyName }}</option>
+                  </ng-container>
+                </select>
+                <button [disabled]="!companySelect.value" [ngClass]="{'filter-success': companySelect.value}" (click)="companySelect.value = ''; datatable.reRender()" class="input-group-text">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-9 col-12">
+              <app-button-group (click)="datatable.downloadTable()" class="float-end" [btnTxt]="'Export'" [btnIcn]="'fa-file-excel-o'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="card-body p-1 overflow-auto">
+        <!-- <app-supervisor-datatable [filterCategory]="categorySelect.value" ></app-supervisor-datatable> -->
+        <app-industry-sv-datatable #datatable [filterCompany]="companySelect.value" (onUpdate)="onSetForm($event)" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.industrySvId"></app-industry-sv-datatable>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="col-lg-5 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Supervisor Details</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <form [formGroup]="industrySvFormGroup" (ngSubmit)="onSubmitForm()">
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <input type="text" formControlName="supervisorId" id="supervisorId" hidden>
+            <label for="supervisorName" class="form-label mb-1">Full name</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="supervisorName" id="supervisorName" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorName', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(industrySvFormGroup, 'supervisorName', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorName', 'required')">Name is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPassword" class="form-label mb-1">Password</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorPassword" id="supervisorPassword" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorPassword', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(industrySvFormGroup, 'supervisorPassword', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorPassword', 'required')">Password is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="supervisorEmail" class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorEmail" id="supervisorEmail" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorEmail', 'required', submitStatus) || appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorEmail', 'email', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(industrySvFormGroup, 'supervisorEmail', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorEmail', 'required')">Email is required</span>
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorEmail', 'email')">Invalid email pattern</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPhone" class="form-label mb-1">Phone number</label>
+            <input type="text" class="form-control form-control-sm" formControlName="supervisorPhone" id="supervisorPhone" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorPhone', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(industrySvFormGroup, 'supervisorPhone', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorPhone', 'required')">Phone number is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="supervisorGender" class="form-label mb-1">Gender</label>
+            <select class="form-select form-select-sm" formControlName="supervisorGender" id="supervisorGender" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(industrySvFormGroup, 'supervisorGender', 'required', submitStatus)}">
+              <option value="" selected hidden></option>
+              <option value="MALE">MALE</option>
+              <option value="FEMALE">FEMALE</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(industrySvFormGroup, 'supervisorGender', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(industrySvFormGroup, 'supervisorGender', 'required')">Gender is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="supervisorPosition" class="form-label mb-1">Position</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="supervisorPosition" id="supervisorPosition">
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="companyId" class="form-label mb-1">Company</label>
+            <select class="form-select form-select-sm" formControlName="companyId" id="companyId">
+              <option value="" selected hidden></option>
+              <ng-container *ngIf="companies.length">
+                <option *ngFor="let company of companies" [value]="company.companyId">{{ company.companyName }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-lg-6 col-12"></div>
+        </div>
+        <div class="row g-0 py-1">
+          <div class="col-lg-6 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <app-button-group class="float-end" [btnType]="'submit'" [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+            <app-button-group (onClick)="submitStatus = false;" class="float-end me-2" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-modal #modal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to delete?
+    <input type="text" #deleteId hidden>
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="modal.close(); deleteId.value = ''" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    <app-button-group class="m-1" (click)="onConfirmDelete(deleteId.value)" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>

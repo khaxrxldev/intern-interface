@@ -1,0 +1,82 @@
+.sidenav {
+  height: 100%;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  background-color: #e6e6e6;
+  overflow-x: hidden;
+}
+
+.sidenav button {
+  background-color: #cccccc;
+  margin: 5px;
+  height: 40px;
+  width: 40px;
+}
+
+.sidenav button:hover {
+  background-color: #b3b3b3;
+}
+
+.sidenav button:focus, .sidenav button:active {
+  outline: none !important;
+  border: none !important;
+}
+
+.sidenav a {
+  margin: 5px;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #000000;
+  display: block;
+  font-size: 14px;
+}
+
+.sidenav a.active {
+  background-color: #cccccc;
+}
+
+.sidenav a:hover {
+  background-color: #b3b3b3;
+}
+
+.sidenav a.active:hover {
+  background-color: #b3b3b3;
+}
+
+a svg {
+  vertical-align: top;
+  margin-top: 2px;
+  margin-right: 10px;
+}
+
+.content-container {
+  margin-top: 56px;
+}
+
+.navbar-style {
+  background-color: #e6e6e6 !important;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+}
+
+.navbar-style button {
+  background-color: #cccccc;
+  outline: none !important;
+  border: none !important;
+}
+
+.navbar-style button:hover {
+  background-color: #b3b3b3;
+}
+
+.navbar-style button:focus, .navbar-style button:active {
+  outline: none !important;
+  border: none !important;
+}
+
+.dropdown-menu a {
+  cursor: pointer;
+}

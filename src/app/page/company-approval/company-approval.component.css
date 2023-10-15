@@ -1,0 +1,42 @@
+.content {
+  font-family: 'Noto Serif', serif;
+  text-justify: inter-word;
+  text-align: justify;
+  background-color: #fff;
+  width: 55% !important;
+  margin: 40px auto 40px auto !important;
+}
+
+.sub-content {
+  width: 85% !important;
+  margin: auto !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-content {
+  background-color: rgb(250, 250, 250) !important;
+}
+
+.content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+}
+
+.content h2 {
+  text-align: center;
+  font-weight: 800;
+}
+
+@media only screen and (max-width: 500px) {
+  .content {
+    width: 100% !important;
+    margin: 0px !important;
+  }
+
+  .sub-content {
+    width: 100% !important;
+  }
+}

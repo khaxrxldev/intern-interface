@@ -1,0 +1,260 @@
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+import { StudentEvaluationRequest } from 'src/app/model/Request/StudentEvaluationRequest';
+import { StudentEvaluationResponse } from 'src/app/model/Response/StudentEvaluationResponse';
+import { AppUtilityService } from 'src/app/service/app-utility.service';
+import { InternCoreService } from 'src/app/service/intern-core.service';
+
+@Component({
+  selector: 'app-student-evaluation-datatable',
+  templateUrl: './student-evaluation-datatable.component.html',
+  styleUrls: ['./student-evaluation-datatable.component.css']
+})
+export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDestroy, OnInit {
+  
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement!: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+  
+  @Output() onViewResult = new EventEmitter<any>();
+  @Output() onEvaluate = new EventEmitter<any>();
+  @Output() onDelete = new EventEmitter<any>();
+
+  constructor(private internCoreService: InternCoreService, private appUtilityService: AppUtilityService, private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.dtOptions = {
+      lengthChange: false,
+      order: [[ 0, "asc" ]],
+      info: false,
+      pagingType: "simple",
+      language: {
+        "decimal":        "",
+        "emptyTable":     "No data available in table",
+        "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
+        "infoEmpty":      "Showing 0 to 0 of 0 entries",
+        "infoFiltered":   "(filtered from _MAX_ total entries)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "_MENU_",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "",
+        "zeroRecords":    "No matching records found",
+        "paginate": {
+            "first":      "",
+            "last":       "",
+            "next":       "<i class='fa fa-chevron-right'></i>",
+            "previous":   "<i class='fa fa-chevron-left'></i>"
+        },
+        "aria": {
+            "sortAscending":  ": activate to sort column ascending",
+            "sortDescending": ": activate to sort column descending"
+        }
+      },
+      columns: [{
+        title: 'Name',
+        data: 'evaluation.evaluationName'
+      }, {
+        title: 'Status',
+        data: ''
+      }, {
+        title: 'Evaluate Date',
+        data: ''
+      }, {
+        title: 'Start Date',
+        data: ''
+      }, {
+        title: 'End Date',
+        data: ''
+      }, {
+        title: '',
+        data: ''
+      }],
+      initComplete: function () {
+        let search_input: HTMLElement = document.querySelector('.dataTables_wrapper .dataTables_filter input')!;
+        search_input.classList.add('form-control', 'm-0');
+      }
+    };
+
+    this.dtOptions.ajax = (dtParameters: any, callback) => {
+      let studentEvaluation: StudentEvaluationRequest = {
+        userLoginType: sessionStorage.getItem('userType') != 'COD' ? sessionStorage.getItem('userType')! : '',
+        studentMatricNum: this.activatedRoute.snapshot.paramMap.get("studentId")!
+      };
+      let studentEvaluations: StudentEvaluationResponse[] = [];
+      
+      this.internCoreService.filterStudentEvaluations(studentEvaluation).subscribe({
+        next: (res) => {
+          if (this.appUtilityService.isObjectNotEmpty(res.data)) {
+            studentEvaluations = res.data.studentEvaluations
+          }
+          
+          callback({
+            recordsTotal: 0,
+            recordsfilter: 0,
+            data: studentEvaluations
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    };
+
+    this.dtOptions.columnDefs = [
+      {
+        targets: 1,
+        orderable: false,
+        className: "align-center",
+        render: function (data, type, row, meta) {
+          let span = document.createElement('span') as HTMLSpanElement;
+          span.classList.add('rounded-pill');
+          span.classList.add('badge-style');
+
+          let i = document.createElement('i') as HTMLElement;
+          i.classList.add('fa');
+          i.classList.add('fa-circle');
+          i.classList.add('me-2');
+
+          switch (row.studentEvaluationStatus) {
+            case 'INC':
+              span.classList.add('badge-danger');
+              span.innerHTML = i.outerHTML + 'Incomplete';
+              break;
+            case 'CMP':
+              span.classList.add('badge-success');
+              span.innerHTML = i.outerHTML + 'Completed';
+              break;
+          }
+
+          return span.outerHTML;
+        }
+      }, {
+        targets: 2,
+        render: function (data, type, row, meta) {
+          if (row.studentEvaluationDate) {
+            return new Date(row.studentEvaluationDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.studentEvaluationDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          } else {
+            return '';
+          }
+        }
+      }, {
+        targets: 3,
+        render: function (data, type, row, meta) {
+          return new Date(row.studentEvaluationStartDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.studentEvaluationStartDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+        }
+      }, {
+        targets: 4,
+        render: function (data, type, row, meta) {
+          return new Date(row.studentEvaluationEndDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.studentEvaluationEndDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+        }
+      }, {
+        targets: -1,
+        orderable: false,
+        className: "align-center",
+        render: function (data, type, row, meta) {
+          let attachBtn = document.createElement('button') as HTMLButtonElement;
+          attachBtn.classList.add('btn');
+          attachBtn.classList.add('btn-secondary');
+          attachBtn.classList.add('btn-sm');
+          attachBtn.classList.add('me-2');
+          attachBtn.setAttribute('id', 'attachBtn');
+
+          if (!row.studentEvaluationAttach) {
+            attachBtn.disabled = true;
+          }
+
+          let icon = document.createElement('i') as HTMLIFrameElement;
+          icon.classList.add('fa');
+          icon.classList.add('fa-file-o');
+
+          attachBtn.innerHTML = icon.outerHTML;
+
+          let resultBtn = document.createElement('a') as HTMLAnchorElement;
+          resultBtn.classList.add('btn');
+          resultBtn.classList.add('btn-primary');
+          resultBtn.classList.add('btn-sm');
+          resultBtn.classList.add('m-1');
+          resultBtn.setAttribute('id', 'resultBtn');
+
+          resultBtn.innerHTML = 'Result';
+
+          let evaluateBtn = document.createElement('a') as HTMLAnchorElement;
+          evaluateBtn.classList.add('btn');
+          evaluateBtn.classList.add('btn-info');
+          evaluateBtn.classList.add('btn-sm');
+          evaluateBtn.classList.add('m-1');
+          evaluateBtn.setAttribute('id', 'evaluateBtn');
+
+          evaluateBtn.innerHTML = 'Evaluate';
+
+          let deleteBtn = document.createElement('a') as HTMLAnchorElement;
+          deleteBtn.classList.add('btn');
+          deleteBtn.classList.add('btn-danger');
+          deleteBtn.classList.add('btn-sm');
+          deleteBtn.classList.add('m-1');
+          deleteBtn.setAttribute('id', 'deleteBtn');
+
+          deleteBtn.innerHTML = 'Delete';
+
+          switch (sessionStorage.getItem('userType')) {
+            case 'COD':
+              return attachBtn.outerHTML + resultBtn.outerHTML + deleteBtn.outerHTML;
+              break;
+            case 'ACD':
+              return attachBtn.outerHTML + evaluateBtn.outerHTML;
+              break;
+            case 'IND':
+              return attachBtn.outerHTML + evaluateBtn.outerHTML;
+              break;
+          }
+          return '';
+        }
+      }
+    ];
+
+    this.dtOptions.rowCallback = (row: Node, data: any[] | Object, index: number) => {
+      $('td:last-child #attachBtn', row).off('click');
+      $('td:last-child #attachBtn', row).on('click', () => {
+        let studentEvaluation: StudentEvaluationResponse = data as StudentEvaluationResponse;
+        this.appUtilityService.onDisplayFile(studentEvaluation.studentEvaluationAttach!);
+      });
+
+      $('td:last-child #resultBtn', row).off('click');
+      $('td:last-child #resultBtn', row).on('click', () => {
+        this.onEvaluate.emit(data);
+      });
+
+      $('td:last-child #evaluateBtn', row).off('click');
+      $('td:last-child #evaluateBtn', row).on('click', () => {
+        this.onEvaluate.emit(data);
+      });
+
+      $('td:last-child #deleteBtn', row).off('click');
+      $('td:last-child #deleteBtn', row).on('click', () => {
+        this.onDelete.emit(data);
+      });
+      
+      return row;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next(this.dtOptions);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+
+  reRender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+      this.dtTrigger.next(this.dtOptions);
+    });
+  }
+}

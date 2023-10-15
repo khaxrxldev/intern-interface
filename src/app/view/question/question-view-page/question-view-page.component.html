@@ -1,0 +1,53 @@
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3"></div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-5 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Question Details</b>
+    </div>
+    <div *ngIf="question" class="w-100 p-2 border-top bg-white">
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Number</label>
+          <input type="text" class="form-control form-control-sm" [value]="question.questionNumber" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Criteria</label>
+          <select class="form-select form-select-sm" disabled>
+            <option value="" selected hidden></option>
+            <ng-container *ngIf="criterias.length">
+              <option [selected]="criteria.criteriaId == question.criteriaId" *ngFor="let criteria of criterias" [value]="criteria.criteriaId">{{ criteria.criteriaName }}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Weightage</label>
+          <input type="text" class="form-control form-control-sm" [value]="question.questionWeightage" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Total Mark</label>
+          <input type="text" class="form-control form-control-sm" [value]="question.questionTotalMark" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Category Code</label>
+          <input type="text" class="form-control form-control-sm" [value]="question.questionCategoryCode" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Category Description</label>
+          <input type="text" class="form-control form-control-sm" [value]="question.questionCategoryDesc" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-12 col-12">
+          <label class="form-label mb-1">Question</label>
+          <div class="form-control form-control-sm textarea-style h-150px" [innerHTML]="question.questionDesc! | trustHTML"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7 col-12 content-col-end border"></div>
+</div>

@@ -1,0 +1,26 @@
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Submission</h4>
+    <div class="sub-header">Submit assignment's document</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-12 content-col-ctr border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Evaluation List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <app-evaluation-datatable (onUploadAttch)="onOpenModal($event)"></app-evaluation-datatable>
+    </div>
+  </div>
+</div>
+
+<app-modal #modal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to upload this attachment?
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="modal.close()" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+    <app-button-group class="m-1" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+  </div>
+</app-modal>

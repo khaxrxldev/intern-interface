@@ -1,0 +1,16 @@
+div.alert {
+  z-index: 1200;
+  width: 400px;
+}
+
+.alert-text {
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+@media only screen and (max-width: 500px) {
+  .alert {
+    width: 50% !important;
+  }
+}

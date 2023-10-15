@@ -1,0 +1,13 @@
+<form [formGroup]="signinFormGroup" (ngSubmit)="onSignin()" class="form-signin py-5">
+  <app-alert [alertStatus]="alertStatus" [alertType]="'danger'" [alertText]="alertText" (onClose)="alertStatus = false"></app-alert>
+  <div class="form-floating">
+    <input formControlName="userEmail" type="email" class="form-control" id="email" placeholder="email">
+    <label for="email">Email address</label>
+  </div>
+  <div class="border-bottom"></div>
+  <div class="form-floating">
+    <input formControlName="userPassword" type="password" class="form-control" id="password" placeholder="password">
+    <label for="password">Password</label>
+  </div>
+  <button class="w-100 btn btn-lg btn-primary mt-5">Sign in</button>
+</form>

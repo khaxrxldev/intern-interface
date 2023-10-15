@@ -1,0 +1,243 @@
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <!-- <h4 class="header m-0">Student Application</h4> -->
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-12 content-col-str border" [ngClass]="{'col-lg-5': userType != 'IND', 'col-lg-12': userType == 'IND'}">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Student Details</b>
+    </div>
+    <div *ngIf="student" class="w-100 p-2 border-top bg-white">
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Full name</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentName" disabled>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Matric number</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentMatricNum" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Email</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentEmail" disabled>
+        </div>
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Password</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentPassword" disabled>
+        </div>
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Phone number</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text">+60</span>
+            <input type="text" class="form-control" [value]="student.studentPhone" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Campus</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentCampus" disabled>
+        </div>
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Course</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentCourse" disabled>
+        </div>
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Class</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentClass" disabled>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-12 col-12">
+          <label class="form-label mb-1">Address</label>
+          <textarea class="form-control form-control-sm textarea-no-resize" rows="5" [value]="student.studentAddress" disabled></textarea>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Academic supervisor</label>
+          <select class="form-select form-select-sm" [value]="student.academicSvId" disabled>
+            <option value="" selected hidden></option>
+            <ng-container *ngIf="academicSupervisors.length">
+              <option [selected]="academicSupervisor.academicSvId == student.academicSvId" *ngFor="let academicSupervisor of academicSupervisors" [value]="academicSupervisor.academicSvId">{{ academicSupervisor.academicSvName }}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Industry supervisor</label>
+          <select class="form-select form-select-sm" [value]="student.industrySvId" disabled>
+            <option value="" selected hidden></option>
+            <ng-container *ngIf="industrySupervisors.length">
+              <option [selected]="industrySupervisor.industrySvId == student.industrySvId" *ngFor="let industrySupervisor of industrySupervisors" [value]="industrySupervisor.industrySvId">{{ industrySupervisor.industrySvName }}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-12 col-12">
+          <label class="form-label mb-1">Project</label>
+          <input type="text" class="form-control form-control-sm" [value]="student.studentProject" disabled>
+        </div>
+      </div>
+      <div class="row g-0 py-1">
+        <div class="col-lg-3 col-12">
+          <label class="form-label mb-1 mt-5px">Resume</label>
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" [value]="student.studentCVFileName" disabled>
+            <button [disabled]="!student.studentCV" (click)="appUtilityService.onDisplayFile(student.studentCV!)" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 py-1">
+        <div class="col-lg-3 col-12">
+          <label class="form-label mt-5px">Mini Transcript</label>
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" [value]="student.studentMiniTranscriptFileName" disabled>
+            <button [disabled]="!student.studentMiniTranscript" (click)="appUtilityService.onDisplayFile(student.studentMiniTranscript!)" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 py-1">
+        <div class="col-lg-3 col-12">
+          <label class="form-label mt-5px">Cover letter</label>
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" [value]="student.studentCoverLetterFileName" disabled>
+            <button [disabled]="!student.studentCoverLetter" (click)="appUtilityService.onDisplayFile(student.studentCoverLetter!)" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 py-1">
+        <div class="col-lg-3 col-12">
+          <label class="form-label mt-5px">Course outline</label>
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" [value]="student.studentCourseOutlineFileName" disabled>
+            <button [disabled]="!student.studentCourseOutline" (click)="appUtilityService.onDisplayFile(student.studentCourseOutline!)" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 py-1">
+        <div class="col-lg-3 col-12">
+          <label class="form-label mt-5px">SL01</label>
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" [value]="student.studentSLFileName" disabled>
+            <button [disabled]="!student.studentSL" (click)="appUtilityService.onDisplayFile(student.studentSL!)" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="userType != 'IND'" class="col-lg-7 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Application List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white overflow-auto">
+      <app-student-application-datatable (onDisplayCompany)="companyModal.open(companyModal.childContent); company = $event.company"></app-student-application-datatable>
+    </div>
+  </div>
+</div>
+
+<app-modal [footerDisplayStatus]="false" [modalSize]="'lg'" #companyModal>
+  <div modal-title>Company Details</div>
+  <div modal-body>
+    <div class="card">
+      <div class="card-header">
+        <b>Company</b>
+      </div>
+      <div *ngIf="company" class="card-body p-2">
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Name</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyName" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Website</label>
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" [value]="company.companyWebsite" disabled>
+              <button [disabled]="!company.companyWebsite" (click)="appUtilityService.onOpenURLNewWindow(company.companyWebsite!)" class="input-group-text">
+                <i class="fa fa-expand fw-bold"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyEmail" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Phone number</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyPhone" disabled>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-12 col-12">
+            <label class="form-label mb-1">Address</label>
+            <textarea class="form-control form-control-sm textarea-no-resize" rows="5" disabled>{{ company.companyAddress }}</textarea>
+          </div>
+        </div>
+        <div class="row g-0 pt-1">
+          <div class="col-lg-3 col-12">
+            <label class="form-label mt-5px">Brochure</label>
+          </div>
+          <div class="col-lg-9 col-12">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" [value]="company.companyBrochureFileName" disabled>
+              <button [disabled]="!company.companyBrochure" (click)="appUtilityService.onDisplayFile(company.companyBrochure!)" class="input-group-text">
+                <i class="fa fa-expand fw-bold"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-header">
+        <b>Person in Charge</b>
+      </div>
+      <div *ngIf="company" class="card-body p-2">
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Name</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyHrName" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Gender</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyHrGender" disabled>
+          </div>
+        </div>
+        <div class="row g-2 pt-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Phone</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyHrPhone" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" [value]="company.companyHrEmail" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-modal>

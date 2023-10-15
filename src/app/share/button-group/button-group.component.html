@@ -1,0 +1,6 @@
+<button [disabled]="disabledStatus" (click)="onClickBtn()" [type]="btnType" class="input-group p-0 btn-group" [ngClass]="[btnBgClass, btnSize]">
+  <span class="input-group-text" [style.color]="btnContentColor" [ngClass]="btnBorderClass" [innerHTML]="btnTxt"></span>
+  <span class="input-group-text" [style.color]="btnContentColor" [ngClass]="btnBorderClass">
+    <i [ngClass]="['fa', btnIcn]"></i>
+  </span>
+</button>

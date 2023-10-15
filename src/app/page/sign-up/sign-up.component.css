@@ -1,0 +1,27 @@
+.nav-tabs {
+  width: 50% !important;
+  margin: 100px auto 0px auto !important;
+}
+
+.nav-content {
+  width: 50% !important;
+  margin: auto !important;
+  margin-bottom: 100px !important;
+}
+
+.nav-buttons {
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 500px) {
+  .nav-tabs {
+    width: 100% !important;
+  }
+
+  .nav-content {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,52 @@
+.nav-tabs {
+  width: 50% !important;
+  margin: 100px auto 0px auto !important;
+}
+
+.nav-content {
+  width: 50% !important;
+  margin: auto !important;
+}
+
+.nav-buttons {
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.navbar-style {
+  background-color: #e6e6e6 !important;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+}
+
+.navbar-style button {
+  background-color: #cccccc;
+  outline: none !important;
+  border: none !important;
+}
+
+.navbar-style button:hover {
+  background-color: #b3b3b3;
+}
+
+.navbar-style button:focus, .navbar-style button:active {
+  outline: none !important;
+  border: none !important;
+}
+
+.dropdown-menu a {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 500px) {
+  .nav-tabs {
+    width: 100% !important;
+  }
+
+  .nav-content {
+    width: 100% !important;
+  }
+}

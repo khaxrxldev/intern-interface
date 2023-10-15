@@ -1,0 +1,12 @@
+.btn-group {
+  border: none;
+  width: fit-content;
+}
+
+.input-group-text:first-child {
+  background-color: transparent;
+}
+
+.input-group-text:nth-child(2) {
+  background-color: rgba(255, 255, 255, 0.2);
+}

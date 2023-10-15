@@ -1,0 +1,14 @@
+<div class="select">
+  <div class="input-group">
+    <input (keyup)="setFilterOptions($event)" (mousedown)="setFilterOptions($event)" autocomplete="off" type="text" class="select-input form-control form-control-sm" (focus)="selectContent = true">
+    <span class="select-icon input-group-text">
+      <i class="fa fa-search"></i>
+    </span>
+  </div>
+  <div *ngIf="selectContent && filterOptions.length" class="select-content">
+    <div *ngFor="let filterOption of filterOptions" class="select-option">
+      <input [checked]="checkedValues && checkedValues.includes(filterOption.value)" (click)="selectContent = true; saveChecked($event)" [value]="filterOption.value" class="select-checkbox form-check-input me-2" type="checkbox">
+      <span class="select-text">{{ filterOption.text }}</span>
+    </div>
+  </div>
+</div>

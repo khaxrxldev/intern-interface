@@ -1,0 +1,111 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Evaluation</h4>
+    <div class="sub-header">Manage all evaluations information</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-7 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Evaluation List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white"><div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item p-1">
+          <div class="row g-1">
+            <div class="col-lg-3 col-12">
+              <div class="input-group">
+                <select #categorySelect [ngClass]="{'filter-success': categorySelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                  <option value="" selected hidden>Category</option>
+                  <option value="ACD">ACADEMIC</option>
+                  <option value="IND">INDUSTRY</option>
+                </select>
+                <button [disabled]="!categorySelect.value" [ngClass]="{'filter-success': categorySelect.value}" (click)="categorySelect.value = ''; datatable.reRender()" class="input-group-text">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-12">
+              <div class="input-group">
+                <select #subjectSelect [ngClass]="{'filter-success': subjectSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                  <option value="" selected hidden>Subject</option>
+                  <ng-container *ngIf="subjectList.length">
+                    <option *ngFor="let subject of subjectList" [value]="subject">{{ subject }}</option>
+                  </ng-container>
+                </select>
+                <button [disabled]="!subjectSelect.value" [ngClass]="{'filter-success': subjectSelect.value}" (click)="subjectSelect.value = ''; datatable.reRender()" class="input-group-text">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-6 col-12">
+              <!-- <app-button-group class="float-end" [btnTxt]="'Export'" [btnIcn]="'fa-file-excel-o'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group> -->
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="card-body p-1 overflow-auto">
+        <app-evaluation-datatable [filterCategory]="categorySelect.value" [filterSubject]="subjectSelect.value" #datatable (onUpdate)="onSetForm($event)" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.evaluationId"></app-evaluation-datatable>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="col-lg-5 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Evaluation Details</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <form [formGroup]="evaluationFormGroup" (ngSubmit)="onSubmitForm()">
+        <div class="row g-2 py-1">
+          <div class="col-lg-12 col-12">
+            <input type="text" formControlName="evaluationId" id="evaluationId" hidden>
+            <label for="evaluationName" class="form-label mb-1">Name</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="evaluationName" id="evaluationName" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationName', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(evaluationFormGroup, 'evaluationName', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(evaluationFormGroup, 'evaluationName', 'required')">Name is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="evaluationCategory" class="form-label mb-1">Category</label>
+            <select class="form-select form-select-sm" formControlName="evaluationCategory" id="evaluationCategory" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationCategory', 'required', submitStatus)}">
+              <option value="" selected hidden></option>
+              <option value="ACD">ACADEMIC</option>
+              <option value="IND">INDUSTRY</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(evaluationFormGroup, 'evaluationCategory', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(evaluationFormGroup, 'evaluationCategory', 'required')">Category is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="evaluationSubject" class="form-label mb-1">Subject</label>
+            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="evaluationSubject" id="evaluationSubject" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationSubject', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(evaluationFormGroup, 'evaluationSubject', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(evaluationFormGroup, 'evaluationSubject', 'required')">Subject is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-0 py-1">
+          <div class="col-lg-6 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <app-button-group class="float-end"  [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+            <app-button-group (onClick)="submitStatus = false;" class="float-end me-2" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-modal #modal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to delete?
+    <input type="text" #deleteId hidden>
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="modal.close(); deleteId.value = ''" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    <app-button-group class="m-1" (click)="onConfirmDelete(deleteId.value)" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>

@@ -1,0 +1,12 @@
+<ng-container *ngIf="accordianContents">
+  <div class="mb-1" *ngFor="let accordianContent of accordianContents" ngbAccordion>
+    <div ngbAccordionItem [collapsed]="accordianContent.collapsedStatus">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Question {{ accordianContent.accordianHeader }}</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody [innerHTML]="accordianContent.accordianBody | trustHTML"></div>
+      </div>
+    </div>
+  </div>
+</ng-container>

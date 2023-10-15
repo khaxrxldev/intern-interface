@@ -1,0 +1,14 @@
+<ng-template #content let-modal>
+	<div *ngIf="headerDisplayStatus" class="modal-header">
+		<h4 class="modal-title">
+			<ng-content select="[modal-title]"></ng-content>
+		</h4>
+		<button *ngIf="closeButtonDisplayStatus" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+	<div class="modal-body">
+		<ng-content select="[modal-body]"></ng-content>
+	</div>
+	<div *ngIf="footerDisplayStatus" class="modal-footer">
+		<ng-content select="[modal-footer]"></ng-content>
+	</div>
+</ng-template>

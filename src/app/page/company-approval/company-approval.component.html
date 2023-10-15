@@ -1,0 +1,151 @@
+<div class="content border rounded py-5">
+  <img src="../../../assets/images/UITM_LOGO_FULL.png" alt="UiTM Logo">
+  <h2 class="py-4">INTERNSHIP APPLICATION</h2>
+  <div *ngIf="application" class="sub-content px-4">
+    <p>Dear {{ application.company?.companyHrGender == 'MALE' ? 'Mr.': 'Mrs' }} {{ appUtilityService.capitalizeString(application.company?.companyHrName!) }},</p>
+    <div>You have received an internship application from a student who enrolled in the <b>3U1I Programme</b> with <b>UiTM {{ application.student?.studentCampus }}</b>. Please refer to the section below for further details related to the student's information and attachments related to the application.</div>
+    <p></p>
+    <div>Hope you can respond to the internship application within the next <b>fourteen days</b> after the email has been received.</div>
+    <p></p>
+    <div>Thank You.</div>
+    <div class="form-content border rounded mt-4 p-4">
+      <div class="row g-0">
+        <div class="col-lg-6 col-12 p-2">
+          <label for="fullName" class="form-label">Full name</label>
+          <input type="text" class="form-control" id="fullName" [value]="application.student?.studentName" readonly>
+        </div>
+        <div class="col-lg-6 col-12 p-2">
+          <label for="matricNumber" class="form-label">Matric number</label>
+          <input type="text" class="form-control" id="matricNumber" [value]="application.student?.studentMatricNum" readonly>
+        </div>
+      </div>
+      <div class="row g-0">
+        <div class="col-lg-6 col-12 p-2">
+          <label for="email" class="form-label">Email</label>
+          <input type="text" class="form-control" id="email" [value]="application.student?.studentEmail" readonly>
+        </div>
+        <div class="col-lg-6 col-12 p-2">
+          <label for="phoneNumber" class="form-label">Phone number</label>
+          <div class="input-group">
+            <span class="input-group-text">+60</span>
+            <input type="text" class="form-control" id="phoneNumber" [value]="application.student?.studentPhone" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0">
+        <div class="col-lg-4 col-12 p-2">
+          <label for="campus" class="form-label">Campus</label>
+          <input type="text" class="form-control" id="campus" [value]="application.student?.studentCampus" readonly>
+        </div>
+        <div class="col-lg-4 col-12 p-2">
+          <label for="course" class="form-label">Course</label>
+          <input type="text" class="form-control" id="course" [value]="application.student?.studentCourse" readonly>
+        </div>
+        <div class="col-lg-4 col-12 p-2">
+          <label for="class" class="form-label">Class</label>
+          <input type="text" class="form-control" id="class" [value]="application.student?.studentClass" readonly>
+        </div>
+      </div>
+      <div class="row g-0">
+        <div class="col-lg-12 col-12 p-2">
+          <label for="address" class="form-label">Address</label>
+          <textarea id="address" class="form-control textarea-no-resize" rows="5" [value]="application.student?.studentAddress" readonly></textarea>
+        </div>
+      </div>
+      <div class="row g-0 my-2">
+        <div class="col-lg-3 col-12 px-2">
+          <label for="resume" class="form-label mt-10">Resume</label>
+        </div>
+        <div class="col-lg-9 col-12 px-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="resume" [value]="application.student?.studentCVFileName" readonly>
+            <button (click)="appUtilityService.onDisplayFile(application.student?.studentCV!)" [disabled]="!application.student?.studentCVFileName" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 my-2">
+        <div class="col-lg-3 col-12 px-2">
+          <label for="miniTranscript" class="form-label mt-10">Mini Transcript</label>
+        </div>
+        <div class="col-lg-9 col-12 px-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="miniTranscript" [value]="application.student?.studentMiniTranscriptFileName" readonly>
+            <button (click)="appUtilityService.onDisplayFile(application.student?.studentMiniTranscript!)" [disabled]="!application.student?.studentMiniTranscriptFileName" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 my-2">
+        <div class="col-lg-3 col-12 px-2">
+          <label for="coverLetter" class="form-label mt-10">Cover letter</label>
+        </div>
+        <div class="col-lg-9 col-12 px-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="coverLetter" [value]="application.student?.studentCoverLetterFileName" readonly>
+            <button (click)="appUtilityService.onDisplayFile(application.student?.studentCoverLetter!)" [disabled]="!application.student?.studentCoverLetterFileName" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 my-2">
+        <div class="col-lg-3 col-12 px-2">
+          <label for="courseOutline" class="form-label mt-10">Course outline</label>
+        </div>
+        <div class="col-lg-9 col-12 px-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="courseOutline" [value]="application.student?.studentCourseOutlineFileName" readonly>
+            <button (click)="appUtilityService.onDisplayFile(application.student?.studentCourseOutline!)" [disabled]="!application.student?.studentCourseOutlineFileName" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-0 my-2">
+        <div class="col-lg-3 col-12 px-2">
+          <label for="sl01" class="form-label mt-10">SL01</label>
+        </div>
+        <div class="col-lg-9 col-12 px-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="sl01" [value]="application.student?.studentSLFileName" readonly>
+            <button (click)="appUtilityService.onDisplayFile(application.student?.studentSL!)" [disabled]="!application.student?.studentSLFileName" class="input-group-text">
+              <i class="fa fa-expand fw-bold"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="application.applicationCompStatus == 'RVW'" class="row g-0 mt-4">
+        <div class="col-lg-6 col-12 px-1"></div>
+        <div class="col-lg-6 col-12 px-1">
+          <app-button-group (click)="agreeModal.open(agreeModal.childContent)" class="m-1 float-end" [btnSize]="'input-group-md'" [btnTxt]="'Accept'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+          <app-button-group (click)="disagreeModal.open(disagreeModal.childContent)" class="m-1 float-end" [btnSize]="'input-group-md'" [btnTxt]="'Reject'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal #agreeModal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to accept the offer?
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="agreeModal.close()" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+    <app-button-group class="m-1" (click)="onUpdateApplication(application ? application.applicationId! : '', 'ACP'); agreeModal.close()" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+  </div>
+</app-modal>
+
+<app-modal #disagreeModal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to reject the offer?
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="disagreeModal.close()" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+    <app-button-group class="m-1" (click)="onUpdateApplication(application ? application.applicationId! : '', 'REJ'); disagreeModal.close()" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+  </div>
+</app-modal>

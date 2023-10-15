@@ -1,0 +1,111 @@
+<div class="sidenav border-end border-2" id="sidenav">
+  <button class="btn shadow-none" (click)="toggle()">
+    <i *ngIf="hideIconStatus" class="fa fa-times"></i>
+    <i *ngIf="openIconStatus" class="fa fa-bars"></i>
+  </button>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/student/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M4 11.3333L0 9L12 2L24 9V17.5H22V10.1667L20 11.3333V18.0113L19.7774 18.2864C17.9457 20.5499 15.1418 22 12 22C8.85817 22 6.05429 20.5499 4.22263 18.2864L4 18.0113V11.3333ZM6 12.5V17.2917C7.46721 18.954 9.61112 20 12 20C14.3889 20 16.5328 18.954 18 17.2917V12.5L12 16L6 12.5ZM3.96927 9L12 13.6846L20.0307 9L12 4.31541L3.96927 9Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Student</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/company/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M21 20H23V22H1V20H3V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V20ZM19 20V4H5V20H19ZM8 11H11V13H8V11ZM8 7H11V9H8V7ZM8 15H11V17H8V15ZM13 15H16V17H13V15ZM13 11H16V13H13V11ZM13 7H16V9H13V7Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Company</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/academic-sv/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Academic</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/industry-sv/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M4 5V19H20V7H11.5858L9.58579 5H4ZM12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Industry</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/evaluation/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M7 4V2H17V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H7ZM7 6H5V20H19V6H17V8H7V6ZM9 4V6H15V4H9Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Evaluation</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/criteria/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM19 20V4H5V20H19ZM8 9H16V11H8V9ZM8 13H16V15H8V13Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Criteria</span>
+  </a>
+  <a *ngIf="userType == 'COD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/question/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Question</span>
+  </a>
+  <a *ngIf="userType == 'ACD' || userType == 'IND'" class="rounded" routerLinkActive="active" routerLink="/dashboard/student/evaluate">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M20 2C20.5523 2 21 2.44772 21 3V6.757L19 8.757V4H5V20H19V17.242L21 15.242V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20ZM21.7782 8.80761L23.1924 10.2218L15.4142 18L13.9979 17.9979L14 16.5858L21.7782 8.80761ZM13 12V14H8V12H13ZM16 8V10H8V8H16Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Evaluate</span>
+  </a>
+  <a *ngIf="userType == 'STD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/application/list">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Application</span>
+  </a>
+  <a *ngIf="userType == 'STD'" class="rounded" routerLinkActive="active" routerLink="/dashboard/submission">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM13 12V16H11V12H8L12 8L16 12H13Z" fill="rgba(0,0,0,1)"></path></svg>
+    <span *ngIf="sidenavTextStatus">Submission</span>
+  </a>
+</div>
+<div class="content overflow-auto" id="content">
+  <nav id="topnav" class="navbar navbar-style">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/dashboard/student/list">
+        <img src="../../../assets/images/UITM_LOGO.png" alt="UiTM Logo" width="20">
+      </a>
+      <ul class="navbar-nav me-auto"></ul>
+      <div class="btn-group" role="group">
+        <ng-container *ngIf="userType" [ngSwitch]="userType">
+          <button *ngSwitchCase="['COD', 'ACD'].includes(userType) ? userType : !userType" (click)="router.navigate(['/dashboard/account/academic-sv'])" type="button" class="btn">
+            Account
+          </button>
+          <button *ngSwitchCase="'IND'" (click)="router.navigate(['/dashboard/account/industry-sv'])" type="button" class="btn">
+            Account
+          </button>
+          <button *ngSwitchCase="'STD'" (click)="router.navigate(['/dashboard/account/student'])" type="button" class="btn">
+            Account
+          </button>
+        </ng-container>
+        <div ngbDropdown class="btn-group" display="dynamic" placement="bottom-end">
+          <button ngbDropdownToggle class="btn pt-2"></button>
+          <div ngbDropdownMenu class="dropdown-menu">
+            <ng-container *ngIf="userType == 'ACD' || userType == 'IND'">
+              <a [disabled]="studentsEvaluationStarted.length <= 0" ngbDropdownItem (click)="notiModal.open(notiModal.childContent)">Notification<i *ngIf="studentsEvaluationStarted.length > 0" class="fa fa-circle mx-2 text-danger"></i></a>
+              <div class="dropdown-divider"></div>
+            </ng-container>
+            <a ngbDropdownItem (click)="logoutModal.open(logoutModal.childContent)">Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<app-modal #notiModal [headerDisplayStatus]="false">
+  <div modal-body>
+    <h4 class="header">Attention</h4>
+    <div class="sub-header">Please complete the evaluation process for the student listed below.</div>
+    <div class="mt-3">
+      <div *ngFor="let studentEvaluationStarted of studentsEvaluationStarted" class="input-group my-1">
+        <input type="text" class="form-control form-control-sm" readonly [value]="studentEvaluationStarted.studentName">
+        <button type="button" (click)="notiModal.close(); router.navigate(['/dashboard/student/result/' + studentEvaluationStarted.studentMatricNum])" class="input-group-text">
+          <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div modal-footer>
+    <app-button-group ngbAutofocus (click)="notiModal.close()" [btnTxt]="'Okay'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+  </div>
+</app-modal>
+
+<app-modal #logoutModal>
+  <div modal-title>Logout</div>
+  <div modal-body>
+    Are you sure you want to logout?
+  </div>
+  <div modal-footer>
+    <app-button-group [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'" class="me-1" (click)="logoutModal.close()"></app-button-group>
+    <app-button-group (click)="logoutModal.close(); onSignout()" [btnTxt]="'Logout'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>

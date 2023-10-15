@@ -1,0 +1,241 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header m-0">Student Result</h4>
+  </div>
+  <div class="col-12 border-bottom bg-white">
+    <div *ngIf="student" class="row g-0 py-2">
+      <div class="col-lg-3 col-12 px-1">
+        <label class="form-label mb-1">Full name</label>
+        <input type="text" class="form-control form-control-sm" [value]="student.studentName" disabled>
+      </div>
+      <div class="col-lg-3 col-12 px-1">
+        <label class="form-label mb-1">Matric Number</label>
+        <input type="text" class="form-control form-control-sm" [value]="student.studentMatricNum" disabled>
+      </div>
+      <div *ngIf="student.academicSv" class="col-lg-3 col-12 px-1">
+        <label class="form-label mb-1">Academic Supervisor</label>
+        <input type="text" class="form-control form-control-sm" [value]="student.academicSv.academicSvName" disabled>
+      </div>
+      <div *ngIf="student.industrySv" class="col-lg-3 col-12 px-1">
+        <label class="form-label mb-1">Industry Supervisor</label>
+        <input type="text" class="form-control form-control-sm" [value]="student.industrySv.industrySvName" disabled>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Evaluation List</b>
+      <app-button-group *ngIf="userType == 'COD'" (click)="evaluationModal.open(evaluationModal.childContent)" style="margin-top: -3px;" class="float-end" [btnTxt]="'Add'" [btnIcn]="'fa-plus'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+    </div>
+    <div class="w-100 p-2 border-top overflow-auto bg-white">
+      <app-student-evaluation-datatable #datatable (onDelete)="deleteModal.open(deleteModal.childContent); deleteId.value = $event.studentEvaluationId" (onEvaluate)="questionModal.open(questionModal.childContent); onGetCompleteEvaluation($event.evaluationId, $event.studentEvaluationId); studentEvaluation = $event"></app-student-evaluation-datatable>
+    </div>
+  </div>
+</div>
+
+<app-modal [modalSize]="'lg'" #evaluationModal>
+  <div modal-title>Evaluation Details</div>
+  <div modal-body>
+    <form [formGroup]="studentEvaluationFormGroup">
+      <div class="row g-2 py-1">
+        <div class="col-lg-12 col-12">
+          <input type="text" formControlName="studentEvaluationId" id="studentEvaluationId" hidden>
+          <label for="evaluationId" class="form-label mb-1">Evaluation</label>
+          <select class="form-select form-select-sm" formControlName="evaluationId" id="evaluationId" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentEvaluationFormGroup, 'evaluationId', 'required', submitStatus)}">
+            <option value="" selected hidden></option>
+            <option *ngFor="let evaluation of evaluations" [value]="evaluation.evaluationId">{{ evaluation.evaluationName }}</option>
+          </select>
+          <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentEvaluationFormGroup, 'evaluationId', submitStatus)" class="form-label-error w-100 mt-1">
+            <span *ngIf="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'evaluationId', 'required')">Category is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label for="studentEvaluationStartDt" class="form-label mb-1">Start date</label>
+          <input formControlName="studentEvaluationStartDt" id="studentEvaluationStartDt" type="text" hidden>
+          <div class="input-group input-group-sm">
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime') ? 'is-invalid': ''" #strDateDD class="input-group-content" [inputId]="'strDateDD'" [inputType]="'number'" [inputPlaceholder]="'DD'" [inputMin]="1" [inputMax]="31" [optionParam]="[1, 31, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime') ? 'is-invalid': ''" #strDateMM class="input-group-content" [inputId]="'strDateMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime') ? 'is-invalid': ''" #strDateYY class="input-group-content" [inputId]="'strDateYY'" [inputType]="'number'" [inputPlaceholder]="'YYYY'" [inputMin]="2023" [inputMax]="2100" [optionParam]="[2023, 2050, 1]" [inputBorderRadius]="'bdr-rad-end'"></app-input-datetime>
+          </div>
+          <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentEvaluationFormGroup, 'studentEvaluationStartDt', submitStatus)" class="form-label-error w-100 mt-1">
+            <span *ngIf="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime')">Invalid date</span>
+          </div>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Start Time</label>
+          <div class="input-group input-group-sm">
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime') ? 'is-invalid': ''" #strTimeHH class="input-group-content" [inputId]="'strTimeHH'" [inputType]="'number'" [inputPlaceholder]="'HH'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime') ? 'is-invalid': ''" #strTimeMM class="input-group-content" [inputId]="'strTimeMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="60" [optionParam]="[0, 60, 5]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+            <select [ngClass]="{'is-invalid': appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime')}" #strTimeAMPM class="form-select form-select-sm input-group-content">
+              <option value="" selected hidden></option>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+          <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentEvaluationFormGroup, 'studentEvaluationStartDt', submitStatus)" class="form-label-error w-100 mt-1">
+            <span *ngIf="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationStartDt', 'invalidDateTime')">Invalid time</span>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label for="studentEvaluationEndDt" class="form-label mb-1">End date</label>
+          <input formControlName="studentEvaluationEndDt" id="studentEvaluationEndDt" type="text" hidden>
+          <div class="input-group input-group-sm">
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime') ? 'is-invalid': ''" #endDateDD class="input-group-content" [inputId]="'endDateDD'" [inputType]="'number'" [inputPlaceholder]="'DD'" [inputMin]="1" [inputMax]="31" [optionParam]="[1, 31, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime') ? 'is-invalid': ''" #endDateMM class="input-group-content" [inputId]="'endDateMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime') ? 'is-invalid': ''" #endDateYY class="input-group-content" [inputId]="'endDateYY'" [inputType]="'number'" [inputPlaceholder]="'YYYY'" [inputMin]="2023" [inputMax]="2100" [optionParam]="[2023, 2050, 1]" [inputBorderRadius]="'bdr-rad-end'"></app-input-datetime>
+          </div>
+          <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentEvaluationFormGroup, 'studentEvaluationEndDt', submitStatus)" class="form-label-error w-100 mt-1">
+            <span *ngIf="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime')">Invalid date</span>
+          </div>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">End Time</label>
+          <div class="input-group input-group-sm">
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime') ? 'is-invalid': ''" #endTimeHH class="input-group-content" [inputId]="'endTimeHH'" [inputType]="'number'" [inputPlaceholder]="'HH'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+            <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime') ? 'is-invalid': ''" #endTimeMM class="input-group-content" [inputId]="'endTimeMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="60" [optionParam]="[0, 60, 5]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+            <select [ngClass]="{'is-invalid': appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime')}" #endTimeAMPM class="form-select form-select-sm input-group-content">
+              <option value="" selected hidden></option>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+          <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentEvaluationFormGroup, 'studentEvaluationEndDt', submitStatus)" class="form-label-error w-100 mt-1">
+            <span *ngIf="appUtilityService.checkFormGroupHasError(studentEvaluationFormGroup, 'studentEvaluationEndDt', 'invalidDateTime')">Invalid time</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div modal-footer>
+    <app-button-group class="float-end" [btnType]="'button'"  [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'" (onClick)="onSubmitForm(strDateDD, strDateMM, strDateYY, strTimeHH, strTimeMM, strTimeAMPM, endDateDD, endDateMM, endDateYY, endTimeHH, endTimeMM, endTimeAMPM)"></app-button-group>
+    <app-button-group class="float-end me-2" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'" (onClick)="submitStatus = false; studentEvaluationFormGroup.reset()"></app-button-group>
+  </div>
+</app-modal>
+
+<app-modal #deleteModal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to delete?
+    <input type="text" #deleteId hidden>
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="deleteModal.close(); deleteId.value = ''" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    <app-button-group class="m-1" (click)="onConfirmDelete(deleteId.value); deleteModal.close()" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>
+
+<app-modal #questionModal [modalSize]="'xl'" [scrollable]="true" [headerDisplayStatus]="false" [closeButtonDisplayStatus]="false">
+  <div #evaluationModalBody modal-body>
+    <table *ngIf="evaluation" class="border-none mb-4">
+      <tr>
+        <td rowspan="2" class="border-none td-w-15pct">
+          <img src="../../../assets/images/UITM_LOGO_FULL.png" alt="UiTM Logo" width="100%">
+        </td>
+        <td class="border-none td-w-10pct td-fw-bold td-bg-color-61116A td-color-fff td-ta-center">{{ evaluation.evaluation!.evaluationSubject }}</td>
+        <td class="border-none td-w-75pct td-fw-bold td-bg-color-211D70 td-color-fff">COLLEGE OF COMPUTING, INFORMATICS AND MEDIA</td>
+      </tr>
+      <tr>
+        <td class="border-none td-fw-bold" colspan="2">{{ evaluation.evaluation!.evaluationName }}</td>
+      </tr>
+    </table>
+    <table *ngIf="student" class="mb-2">
+      <tr>
+        <td class="td-w-25pct td-fw-bold">STUDENT NAME</td>
+        <td class="td-w-25pct">{{ student.studentName }}</td>
+        <td class="td-w-25pct td-fw-bold">MATRIC NUMBER</td>
+        <td class="td-w-25pct">{{ student.studentMatricNum }}</td>
+      </tr>
+      <tr>
+        <td class="td-fw-bold">ACADEMIC SUPERVISOR</td>
+        <td colspan="3">{{ student.academicSv?.academicSvName }}</td>
+      </tr>
+      <tr>
+        <td class="td-fw-bold">INDUSTRY SUPERVISOR</td>
+        <td colspan="3">{{ student.industrySv?.industrySvName }}</td>
+      </tr>
+      <tr>
+        <td class="td-fw-bold">ORGANIZATION NAME</td>
+        <td colspan="3">{{ student.industrySv?.company?.companyName }}</td>
+      </tr>
+      <tr>
+        <td class="td-fw-bold">PROJECT TITLE</td>
+        <td colspan="3">{{ student.studentProject }}</td>
+      </tr>
+    </table>
+    <table *ngIf="evaluation" class="mb-2">
+      <ng-container *ngFor="let criteria of evaluation.criterias; index as ic">
+        <tr>
+          <td class="td-w-70pct td-fw-bold td-bg-color-ccc">{{ criteria.criteria?.criteriaName }}</td>
+          <td class="td-w-10pct td-fw-bold td-ta-center td-bg-color-ccc">WEIGHT (W)</td>
+          <td class="td-w-10pct td-fw-bold td-ta-center td-bg-color-ccc">SCORE (S)</td>
+          <td class="td-w-10pct td-fw-bold td-ta-center td-bg-color-ccc">MARKS (W * S)</td>
+        </tr>
+        <tr>
+          <td *ngIf="criteria.criteria?.criteriaDesc" colspan="4">{{ criteria.criteria?.criteriaDesc }}</td>
+        </tr>
+        <tr *ngFor="let question of criteria.questions; index as iq">
+          <td [innerHTML]="question.questionDesc! | trustHTML"></td>
+          <td class="td-ta-center">
+            <input *ngIf="userType != 'COD'; else questionWeightage" [value]="question.questionWeightage" class="form-control form-control-sm" type="number" readonly>
+            <ng-template #questionWeightage>{{ question.questionWeightage }}</ng-template>
+          </td>
+          <td class="td-ta-center">
+            <select *ngIf="userType != 'COD'; else resultScore" [id]="'select_score_' + ic + '_' + iq" (change)="setTotalMark(evaluationModalBody, question.questionWeightage!, $event, 'input_total_mark_' + ic + '_' + iq, ic, 'input_total_criteria_' + ic)" class="form-select form-select-sm">
+              <option selected hidden></option>
+              <option [selected]="mark === question.questionResult?.resultScore" *ngFor="let mark of question.questionTotalMarks">{{ mark }}</option>
+            </select>
+            <ng-template #resultScore>{{ question.questionResult?.resultScore }}</ng-template>
+          </td>
+          <td class="td-ta-center">
+            <ng-container *ngIf="userType != 'COD'; else resultTotalMark">
+              <input [id]="'question_id_' + ic + '_' + iq" type="text" [value]="question.questionId" hidden>
+              <input [value]="question.questionResult?.resultTotalMark" class="form-control form-control-sm" [id]="'input_total_mark_' + ic + '_' + iq" type="number" readonly>
+            </ng-container>
+            <ng-template #resultTotalMark>{{ question.questionResult?.resultTotalMark }}</ng-template>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="td-fw-bold">TOTAL ({{ criteria.criteria?.criteriaPercentage }}%)</td>
+          <td class="td-ta-center">
+            <input [id]="'input_criteria_percent' + ic" type="text" [value]="criteria.criteria?.criteriaPercentage" hidden>
+            <input *ngIf="userType != 'COD'; else criteriaMark" [value]="criteria.criteriaMark | number : '1.2-2'" class="form-control form-control-sm" [id]="'input_total_criteria_' + ic" type="number" readonly>
+            <ng-template #criteriaMark>{{ criteria.criteriaMark | number : '1.2-2' }}</ng-template>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <table *ngIf="appUtilityService.isObjectNotEmpty(studentEvaluation)">
+      <input type="text" [value]="studentEvaluation.studentEvaluationId" hidden>
+      <tr>
+        <td class="td-w-10pct td-fw-bold">Comment</td>
+        <td colspan="2">
+          <textarea *ngIf="userType != 'COD'; else studentEvaluationComment" [innerHTML]="studentEvaluation.studentEvaluationComment" [id]="'textarea_comment_criteria'" oninput="this.value = this.value.toUpperCase()" class="form-control form-control-sm textarea-no-resize" rows="5"></textarea>
+          <ng-template #studentEvaluationComment>
+            <textarea [innerHTML]="studentEvaluation.studentEvaluationComment" class="form-control form-control-sm textarea-no-resize border-0" rows="5" readonly></textarea>
+          </ng-template>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="td-fw-bold" [id]="'total_criteria_percentage'"></td>
+        <td class="td-w-10pct td-ta-center">
+          <input *ngIf="userType != 'COD'; else studentEvaluationTotalScore" [value]="studentEvaluation.studentEvaluationTotalScore | number : '1.2-2'" [id]="'input_total_all_criteria'" class="form-control form-control-sm" type="text" readonly>
+          <ng-template #studentEvaluationTotalScore>{{ studentEvaluation.studentEvaluationTotalScore | number : '1.2-2' }}</ng-template>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div modal-footer>
+    <app-button-group (click)="questionModal.close(); studentEvaluation = {}; disableSubmitEvaluationbtn = true" class="m-1" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+    <ng-container *ngIf="userType != 'COD'; else printBtn" >
+      <app-button-group [disabledStatus]="disableSubmitEvaluationbtn" (click)="onSubmitEvaluation(evaluationModalBody, studentEvaluation.studentEvaluationId!); questionModal.close()" class="m-1" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    </ng-container>
+    <ng-template #printBtn>
+      <app-button-group *ngIf="evaluation" (click)="printDiv(evaluationModalBody, evaluation.evaluation!.evaluationName!)" class="m-1" [btnTxt]="'Print'" [btnIcn]="'fa-print'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+    </ng-template>
+  </div>
+</app-modal>
