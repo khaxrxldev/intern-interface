@@ -7,6 +7,7 @@ import { ApplicationRequest } from '../model/Request/ApplicationRequest';
 import { StudentEvaluationRequest } from '../model/Request/StudentEvaluationRequest';
 import { CriteriaRequest } from '../model/Request/CriteriaRequest';
 import { ResultRequest } from '../model/Request/ResultRequest';
+import { StudentRequest } from '../model/Request/StudentRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -107,6 +108,10 @@ export class InternCoreService {
     return this.httpClient.delete<Response>(intern_core_service.application + `/${applicationId}`);
   }
 
+  retrieveStudentResults() {
+    return this.httpClient.get<Response>(`${intern_core_service.studentsEvaluations}/results`);
+  }
+
   filterStudentEvaluations(studentEvaluation: StudentEvaluationRequest) {
     const postData = new FormData();
 
@@ -115,6 +120,14 @@ export class InternCoreService {
     }));
 
     return this.httpClient.post<Response>(`${intern_core_service.studentsEvaluations}/filter`, postData);
+  }
+
+  insertStudentEvaluations(studentMatricNum: string) {
+    const postData = new FormData();
+
+    postData.append('studentMatricNum', studentMatricNum);
+
+    return this.httpClient.post<Response>(intern_core_service.studentsEvaluations, postData);
   }
 
   insertStudentEvaluation(studentEvaluation: StudentEvaluationRequest, attachFile: File) {

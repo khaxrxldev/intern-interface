@@ -6,7 +6,9 @@ export const intern_common_service = {
   company: `${domain}${intern_common_service_port}/common/company`,
   companies: `${domain}${intern_common_service_port}/common/companies`,
   question: `${domain}${intern_common_service_port}/common/question`,
-  questions: `${domain}${intern_common_service_port}/common/questions`
+  questions: `${domain}${intern_common_service_port}/common/questions`,
+  semester: `${domain}${intern_common_service_port}/common/semester`,
+  semesters: `${domain}${intern_common_service_port}/common/semesters`
 }
 
 export const intern_common_reactive_service = {

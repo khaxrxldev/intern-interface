@@ -28,8 +28,14 @@ const routes: Routes = [
         path: 'student',
         loadChildren: () => import('./view/student/student.module').then((module) => module.StudentModule), canMatch: [canMatchFn]
       }, {
+        path: 'result',
+        loadChildren: () => import('./view/result/result.module').then((module) => module.ResultModule), canMatch: [canMatchFn]
+      }, {
         path: 'company',
         loadChildren: () => import('./view/company/company.module').then((module) => module.CompanyModule), canMatch: [canMatchFn]
+      }, {
+        path: 'semester',
+        loadChildren: () => import('./view/semester/semester.module').then((module) => module.SemesterModule), canMatch: [canMatchFn]
       }, {
         path: 'evaluation',
         loadChildren: () => import('./view/evaluation/evaluation.module').then((module) => module.EvaluationModule), canMatch: [canMatchFn]

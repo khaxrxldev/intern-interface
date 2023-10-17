@@ -1,0 +1,83 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Result</h4>
+    <div class="sub-header">Manage all students result information</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Student List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-1">
+            <div class="row g-1">
+              <div class="col-lg-9 col-12"></div>
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" (keyup)="onFilterTable($event)">
+                  <span class="select-icon input-group-text">
+                    <i class="fa fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="card-body p-1 overflow-auto">
+          <table class="w-100" id="myTable">
+            <tr>
+              <th rowspan="2">MATRIC NUMBER</th>
+              <th rowspan="2">NAME</th>
+              <th rowspan="2">CLASS</th>
+              <th rowspan="2">STATUS</th>
+              <th colspan="3">CST 656</th>
+              <th colspan="3">CST 666</th>
+            </tr>
+            <tr>
+              <th>TOTAL MARK</th>
+              <th>GRADE</th>
+              <th>POINTER</th>
+              <th>TOTAL MARK</th>
+              <th>GRADE</th>
+              <th>POINTER</th>
+            </tr>
+            <tr *ngFor="let studentResult of (studentResult$ | async)">
+              <td>{{ studentResult.student?.studentMatricNum }}</td>
+              <td><a [href]="'/dashboard/student/result/' + studentResult.student?.studentMatricNum">{{ studentResult.student?.studentName }}</a></td>
+              <td>{{ studentResult.student?.studentClass }}</td>
+              <td class="text-center" [ngSwitch]="studentResult.studentEvaluationsStatus">
+                <span *ngSwitchCase="'CMP'" class="rounded-pill badge-style badge-success">
+                  <i class="fa fa-circle me-2"></i>Complete
+                </span>
+                <span *ngSwitchCase="'INC'" class="rounded-pill badge-style badge-danger">
+                  <i class="fa fa-circle me-2"></i>Incomplete
+                </span>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject1TotalMark?.toFixed(2) }}</ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject1Grade }}</ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject1Pointer }}</ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject2TotalMark?.toFixed(2) }}</ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject2Grade }}</ng-container>
+              </td>
+              <td class="text-center">
+                <ng-container *ngIf="studentResult.studentEvaluationsStatus == 'CMP'">{{ studentResult.subject2Pointer }}</ng-container>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

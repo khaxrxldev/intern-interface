@@ -14,14 +14,21 @@
         </div>
       </div>
       <div class="row g-2 py-1">
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-4 col-12">
           <label class="form-label mb-1">Category</label>
           <select class="form-select form-select-sm" [value]="evaluation.evaluationCategory" disabled>
             <option value="ACD">ACADEMIC</option>
             <option value="IND">INDUSTRY</option>
           </select>
         </div>
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-4 col-12">
+          <label class="form-label mb-1">Part</label>
+          <select class="form-select form-select-sm" [value]="evaluation.evaluationPart" disabled>
+            <option value="PART_6">PART 6</option>
+            <option value="PART_7">PART 7</option>
+          </select>
+        </div>
+        <div class="col-lg-4 col-12">
           <label class="form-label mb-1">Subject</label>
           <input type="text" class="form-control form-control-sm" [value]="evaluation.evaluationSubject" disabled>
         </div>

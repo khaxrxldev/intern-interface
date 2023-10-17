@@ -1,0 +1,164 @@
+<app-toast #toast></app-toast>
+<div class="row g-0 content-col">
+  <div class="col-12 border-bottom bg-white px-2 py-3">
+    <h4 class="header">Semester</h4>
+    <div class="sub-header">Manage all semesters information</div>
+  </div>
+  <!-- <div class="col-12 border-bottom bg-white"></div> -->
+  <div class="col-lg-7 col-12 content-col-str border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Semester List</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-1">
+            <div class="row g-1">
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <select #partSelect [ngClass]="{'filter-success': partSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                    <option value="" selected hidden>Part</option>
+                    <option value="PART_6">PART 6</option>
+                    <option value="PART_7">PART 7</option>
+                  </select>
+                  <button [disabled]="!partSelect.value" [ngClass]="{'filter-success': partSelect.value}" (click)="partSelect.value = ''; datatable.reRender()" class="input-group-text">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <select #statusSelect [ngClass]="{'filter-success': statusSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                    <option value="" selected hidden>Status</option>
+                    <option value="IAC">INACTIVE</option>
+                    <option value="ACT">ACTIVE</option>
+                  </select>
+                  <button [disabled]="!statusSelect.value" [ngClass]="{'filter-success': statusSelect.value}" (click)="statusSelect.value = ''; datatable.reRender()" class="input-group-text">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                <!-- <app-button-group class="float-end" [btnTxt]="'Export'" [btnIcn]="'fa-file-excel-o'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group> -->
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="card-body p-1 overflow-auto">
+          <app-semester-datatable #datatable [filterPart]="partSelect.value" [filterStatus]="statusSelect.value" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.semesterId" (onUpdateStatus)="onSetSemesterStatusList($event)" (onUpdate)="onSetForm($event, strDateDD, strDateMM, strDateYY, strTimeHH, strTimeMM, strTimeAMPM, endDateDD, endDateMM, endDateYY, endTimeHH, endTimeMM, endTimeAMPM)"></app-semester-datatable>
+        </div>
+        <div *ngIf="semesters.length" class="card-footer">
+          <app-button-group class="me-2" (click)="semesters = []; datatable.reRender()" [btnType]="'button'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          <app-button-group (click)="onUpdateSemesters()" [btnType]="'button'" [btnTxt]="'Update'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5 col-12 content-col-end border">
+    <div class="w-100 p-2 border-start border-5">
+      <b>Semester Details</b>
+    </div>
+    <div class="w-100 p-2 border-top bg-white">
+      <form [formGroup]="semesterFormGroup">
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <input type="text" formControlName="semesterId" id="semesterId" hidden>
+            <label for="semesterCode" class="form-label mb-1">Code</label>
+            <input type="text" class="form-control form-control-sm" formControlName="semesterCode" id="semesterCode" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(semesterFormGroup, 'semesterCode', 'required', submitStatus)}">
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterCode', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterCode', 'required')">Code is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="semesterPart" class="form-label mb-1">Part</label>
+            <select class="form-select form-select-sm" formControlName="semesterPart" id="semesterPart" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(semesterFormGroup, 'semesterPart', 'required', submitStatus)}">
+              <option value="" selected hidden></option>
+              <option value="PART_6">PART 6</option>
+              <option value="PART_7">PART 7</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterPart', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterPart', 'required')">Part is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="semesterStartEvaluateDate" class="form-label mb-1">Evaluation Start date</label>
+            <input formControlName="semesterStartEvaluateDate" id="semesterStartEvaluateDate" type="text" hidden>
+            <div class="input-group input-group-sm">
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #strDateDD class="input-group-content" [inputId]="'strDateDD'" [inputType]="'number'" [inputPlaceholder]="'DD'" [inputMin]="1" [inputMax]="31" [optionParam]="[1, 31, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #strDateMM class="input-group-content" [inputId]="'strDateMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #strDateYY class="input-group-content" [inputId]="'strDateYY'" [inputType]="'number'" [inputPlaceholder]="'YYYY'" [inputMin]="2023" [inputMax]="2100" [optionParam]="[2023, 2050, 1]" [inputBorderRadius]="'bdr-rad-end'"></app-input-datetime>
+            </div>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterStartEvaluateDate', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime')">Invalid date</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Evaluation Start Time</label>
+            <div class="input-group input-group-sm">
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #strTimeHH class="input-group-content" [inputId]="'strTimeHH'" [inputType]="'number'" [inputPlaceholder]="'HH'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #strTimeMM class="input-group-content" [inputId]="'strTimeMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="60" [optionParam]="[0, 60, 5]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+              <select [ngClass]="{'is-invalid': appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime')}" #strTimeAMPM class="form-select form-select-sm input-group-content">
+                <option value="" selected hidden></option>
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterStartEvaluateDate', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterStartEvaluateDate', 'invalidDateTime')">Invalid time</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="semesterEndEvaluateDate" class="form-label mb-1">Evaluation End date</label>
+            <input formControlName="semesterEndEvaluateDate" id="semesterEndEvaluateDate" type="text" hidden>
+            <div class="input-group input-group-sm">
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #endDateDD class="input-group-content" [inputId]="'endDateDD'" [inputType]="'number'" [inputPlaceholder]="'DD'" [inputMin]="1" [inputMax]="31" [optionParam]="[1, 31, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #endDateMM class="input-group-content" [inputId]="'endDateMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #endDateYY class="input-group-content" [inputId]="'endDateYY'" [inputType]="'number'" [inputPlaceholder]="'YYYY'" [inputMin]="2023" [inputMax]="2100" [optionParam]="[2023, 2050, 1]" [inputBorderRadius]="'bdr-rad-end'"></app-input-datetime>
+            </div>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterEndEvaluateDate', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime')">Invalid date</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Evaluation End Time</label>
+            <div class="input-group input-group-sm">
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #endTimeHH class="input-group-content" [inputId]="'endTimeHH'" [inputType]="'number'" [inputPlaceholder]="'HH'" [inputMin]="1" [inputMax]="12" [optionParam]="[1, 12, 1]" [inputBorderRadius]="'bdr-rad-str'"></app-input-datetime>
+              <app-input-datetime [inputInvalidStatus]="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime') ? 'is-invalid': ''" #endTimeMM class="input-group-content" [inputId]="'endTimeMM'" [inputType]="'number'" [inputPlaceholder]="'MM'" [inputMin]="1" [inputMax]="60" [optionParam]="[0, 60, 5]" [inputBorderRadius]="'bdr-rad-mdl'"></app-input-datetime>
+              <select [ngClass]="{'is-invalid': appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime')}" #endTimeAMPM class="form-select form-select-sm input-group-content">
+                <option value="" selected hidden></option>
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(semesterFormGroup, 'semesterEndEvaluateDate', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(semesterFormGroup, 'semesterEndEvaluateDate', 'invalidDateTime')">Invalid time</span>
+            </div>
+          </div>
+        </div>
+        <div class="row g-0 py-1">
+          <div class="col-lg-6 col-12"></div>
+          <div class="col-lg-6 col-12">
+            <app-button-group class="float-end" [btnType]="'submit'" [btnTxt]="'Submit'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'" (onClick)="onSubmitForm(strDateDD, strDateMM, strDateYY, strTimeHH, strTimeMM, strTimeAMPM, endDateDD, endDateMM, endDateYY, endTimeHH, endTimeMM, endTimeAMPM)"></app-button-group>
+            <app-button-group (onClick)="submitStatus = false;" class="float-end me-2" [btnType]="'reset'" [btnTxt]="'Reset'" [btnIcn]="'fa-refresh'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-modal #modal>
+  <div modal-title>Confirmation</div>
+  <div modal-body>
+    Are you sure you want to delete?
+    <input type="text" #deleteId hidden>
+  </div>
+  <div modal-footer>
+    <app-button-group class="m-1" (click)="modal.close(); deleteId.value = ''" [btnTxt]="'Cancel'" [btnIcn]="'fa-close'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
+    <app-button-group class="m-1" (click)="onConfirmDelete(deleteId.value)" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-danger'" [btnBorderClass]="'border-danger'"></app-button-group>
+  </div>
+</app-modal>

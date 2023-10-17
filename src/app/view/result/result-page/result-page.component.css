@@ -1,0 +1,16 @@
+table {
+  font-size: 0.8em;
+}
+
+th {
+  text-align: center;
+  white-space: nowrap;
+  padding: 0.6em !important;
+  background-color: #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+
+td {
+  padding: 0.6em !important;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}

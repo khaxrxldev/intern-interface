@@ -4,6 +4,7 @@ import { intern_common_service } from 'src/assets/environments/environment.dev';
 import { Response } from '../model/Response';
 import { CompanyRequest } from '../model/Request/CompanyRequest';
 import { QuestionRequest } from '../model/Request/QuestionRequest';
+import { SemesterRequest } from '../model/Request/SemesterRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -86,5 +87,57 @@ export class InternCommonService {
 
   deleteQuestionByQuestionId(questionId: string) {
     return this.httpClient.delete<Response>(intern_common_service.question + `/${questionId}`);
+  }
+
+  retrieveSemesters() {
+    return this.httpClient.get<Response>(intern_common_service.semesters);
+  }
+
+  filterSemesters(semester: SemesterRequest) {
+    const postData = new FormData();
+
+    postData.append('semesterRequest', new Blob([JSON.stringify(semester)], {
+      type: 'application/json',
+    }));
+
+    return this.httpClient.post<Response>(`${intern_common_service.semesters}/filter`, postData);
+  }
+
+  retrieveSemesterBySemesterId(semesterId: string) {
+    return this.httpClient.get<Response>(intern_common_service.semester + `/${semesterId}`);
+  }
+
+  insertSemester(semester: SemesterRequest) {
+    const postData = new FormData();
+
+    postData.append('semesterRequest', new Blob([JSON.stringify(semester)], {
+      type: 'application/json',
+    }));
+
+    return this.httpClient.post<Response>(intern_common_service.semester, postData);
+  }
+
+  updateSemester(semester: SemesterRequest) {
+    const postData = new FormData();
+
+    postData.append('semesterRequest', new Blob([JSON.stringify(semester)], {
+      type: 'application/json',
+    }));
+
+    return this.httpClient.put<Response>(intern_common_service.semester, postData);
+  }
+
+  updateSemesters(semesters: SemesterRequest[]) {
+    const postData = new FormData();
+
+    postData.append('semesterRequests', new Blob([JSON.stringify(semesters)], {
+      type: 'application/json',
+    }));
+
+    return this.httpClient.put<Response>(intern_common_service.semesters, postData);
+  }
+
+  deleteSemesterBySemesterId(semesterId: string) {
+    return this.httpClient.delete<Response>(intern_common_service.semester + `/${semesterId}`);
   }
 }

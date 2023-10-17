@@ -65,6 +65,9 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
         title: 'Evaluate Date',
         data: ''
       }, {
+        title: 'Semester',
+        data: 'semester.semesterCode'
+      }, {
         title: 'Start Date',
         data: ''
       }, {
@@ -143,14 +146,22 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
           }
         }
       }, {
-        targets: 3,
-        render: function (data, type, row, meta) {
-          return new Date(row.studentEvaluationStartDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.studentEvaluationStartDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
-        }
-      }, {
         targets: 4,
         render: function (data, type, row, meta) {
-          return new Date(row.studentEvaluationEndDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.studentEvaluationEndDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          if (row.semester) {
+            return new Date(row.semester.semesterStartEvaluateDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.semester.semesterStartEvaluateDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          } else {
+            return '';
+          }
+        }
+      }, {
+        targets: 5,
+        render: function (data, type, row, meta) {
+          if (row.semester) {
+            return new Date(row.semester.semesterEndEvaluateDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.semester.semesterEndEvaluateDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          } else {
+            return '';
+          }
         }
       }, {
         targets: -1,
@@ -183,13 +194,22 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
 
           resultBtn.innerHTML = 'Result';
 
-          let evaluateBtn = document.createElement('a') as HTMLAnchorElement;
+          let evaluateBtn = document.createElement('button') as HTMLButtonElement;
           evaluateBtn.classList.add('btn');
           evaluateBtn.classList.add('btn-info');
           evaluateBtn.classList.add('btn-sm');
           evaluateBtn.classList.add('m-1');
           evaluateBtn.setAttribute('id', 'evaluateBtn');
 
+          if (row.semester) {
+            let fromDate: Date = new Date(row.semester.semesterStartEvaluateDate);
+            let comparedDate: Date = new Date();
+            let toDate: Date = new Date(row.semester.semesterEndEvaluateDate);
+            if (!(fromDate.getTime() <= comparedDate.getTime() && toDate.getTime() >= comparedDate.getTime())) {
+              evaluateBtn.setAttribute('disabled', 'true');
+            }
+          }
+          
           evaluateBtn.innerHTML = 'Evaluate';
 
           let deleteBtn = document.createElement('a') as HTMLAnchorElement;

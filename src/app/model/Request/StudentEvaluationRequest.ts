@@ -1,3 +1,5 @@
+import { SemesterResponse } from "../Response/SemesterResponse";
+
 export interface StudentEvaluationRequest {
   studentEvaluationId?: string,
   studentEvaluationDate?: string,
@@ -13,5 +15,7 @@ export interface StudentEvaluationRequest {
   studentMatricNum?: string,
   academicSvId?: string,
   industrySvId?: string,
+  semesterId?: string,
+  semester?: SemesterResponse,
   userLoginType?: string
 }
