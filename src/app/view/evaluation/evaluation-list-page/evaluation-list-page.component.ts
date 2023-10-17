@@ -7,8 +7,6 @@ import { AppUtilityService } from 'src/app/service/app-utility.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EvaluationRequest } from 'src/app/model/Request/EvaluationRequest';
 import { EvaluationResponse } from 'src/app/model/Response/EvaluationResponse';
-import { InputDateTime } from 'src/app/validator/input-date-time';
-import { InputDatetimeComponent } from 'src/app/share/input-datetime/input-datetime.component';
 
 @Component({
   selector: 'app-evaluation-list-page',
@@ -55,6 +53,7 @@ export class EvaluationListPageComponent implements OnInit {
     evaluationId: new FormControl(null, [ ]),
     evaluationName: new FormControl(null, [ Validators.required ]),
     evaluationCategory: new FormControl(null, [ Validators.required ]),
+    evaluationPart: new FormControl(null, [ Validators.required ]),
     evaluationSubject: new FormControl(null, [ Validators.required ]),
   });
 
@@ -68,6 +67,7 @@ export class EvaluationListPageComponent implements OnInit {
       evaluationId: this.evaluationFormGroup.controls['evaluationId'].value,
       evaluationName: this.evaluationFormGroup.controls['evaluationName'].value,
       evaluationCategory: this.evaluationFormGroup.controls['evaluationCategory'].value,
+      evaluationPart: this.evaluationFormGroup.controls['evaluationPart'].value,
       evaluationSubject: this.evaluationFormGroup.controls['evaluationSubject'].value,
     }
 
@@ -122,6 +122,7 @@ export class EvaluationListPageComponent implements OnInit {
     this.evaluationFormGroup.controls['evaluationId'].setValue(evaluation.evaluationId);
     this.evaluationFormGroup.controls['evaluationName'].setValue(evaluation.evaluationName);
     this.evaluationFormGroup.controls['evaluationCategory'].setValue(evaluation.evaluationCategory);
+    this.evaluationFormGroup.controls['evaluationPart'].setValue(evaluation.evaluationPart);
     this.evaluationFormGroup.controls['evaluationSubject'].setValue(evaluation.evaluationSubject);
   }
 

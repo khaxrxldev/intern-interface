@@ -65,6 +65,18 @@ export class AppUtilityService {
     return date + ", " + time;
   }
 
+  returnDate(dateString: string) {
+    return new Date(dateString).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(dateString).toLocaleString('default', { hour12: true, timeStyle: "short" });
+  }
+
+  checkDateInBetween(fromDate: Date, comparedDate: Date, toDate: Date) {
+    if (fromDate.getTime() <= comparedDate.getTime() && toDate.getTime() >= comparedDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
    * function display PDF file
    * @function
@@ -246,6 +258,7 @@ export class AppUtilityService {
       }
       str += line + '\r\n';
     }
+
     return str;
   }
 
@@ -270,5 +283,9 @@ export class AppUtilityService {
         return data
         break;
     }
+  }
+
+  zeroPadToNumber(number: number, place: number) {
+    return String(number).padStart(place, '0');
   }
 }

@@ -16,7 +16,7 @@
             <div class="col-lg-3 col-12">
               <div class="input-group">
                 <select #criteriaSelect [ngClass]="{'filter-success': criteriaSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
-                  <option value="" selected hidden>criteria</option>
+                  <option value="" selected hidden>Criteria</option>
                   <ng-container *ngIf="criterias.length">
                     <option *ngFor="let criteria of criterias" [value]="criteria.criteriaId">{{ criteria.criteriaName }}</option>
                   </ng-container>

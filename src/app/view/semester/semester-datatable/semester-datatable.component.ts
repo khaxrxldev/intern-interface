@@ -1,36 +1,36 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
-import { EvaluationRequest } from 'src/app/model/Request/EvaluationRequest';
-import { EvaluationResponse } from 'src/app/model/Response/EvaluationResponse';
+import { SemesterRequest } from 'src/app/model/Request/SemesterRequest';
+import { SemesterResponse } from 'src/app/model/Response/SemesterResponse';
 import { AppUtilityService } from 'src/app/service/app-utility.service';
-import { InternCoreService } from 'src/app/service/intern-core.service';
+import { InternCommonService } from 'src/app/service/intern-common.service';
 
 @Component({
-  selector: 'app-evaluation-datatable',
-  templateUrl: './evaluation-datatable.component.html',
-  styleUrls: ['./evaluation-datatable.component.css']
+  selector: 'app-semester-datatable',
+  templateUrl: './semester-datatable.component.html',
+  styleUrls: ['./semester-datatable.component.css']
 })
-export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, OnInit {
+export class SemesterDatatableComponent implements AfterViewInit, OnDestroy, OnInit {
   
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
-
-  @Input() filterCategory!: string;
-  @Input() filterSubject!: string;
+  
   @Input() filterPart!: string;
+  @Input() filterStatus!: string;
 
   @Output() onUpdate = new EventEmitter<any>();
+  @Output() onUpdateStatus = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<any>();
 
-  constructor(private internCoreService: InternCoreService, private appUtilityService: AppUtilityService) {}
+  constructor(private internCommonService: InternCommonService, private appUtilityService: AppUtilityService) {}
 
   ngOnInit(): void {
     this.dtOptions = {
       lengthChange: false,
-      order: [[ 0, "asc" ]],
+      order: [[ 1, "asc" ]],
       info: false,
       pagingType: "simple",
       language: {
@@ -58,16 +58,19 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
         }
       },
       columns: [{
-        title: 'Name',
-        data: 'evaluationName'
+        title: 'Status',
+        data: ''
+      }, {
+        title: 'Code',
+        data: 'semesterCode'
       }, {
         title: 'Part',
         data: ''
       }, {
-        title: 'Subject',
-        data: 'evaluationSubject'
+        title: 'Start Date',
+        data: ''
       }, {
-        title: 'Category',
+        title: 'End Date',
         data: ''
       }, {
         title: '',
@@ -80,23 +83,22 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
     };
 
     this.dtOptions.ajax = (dtParameters: any, callback) => {
-      let evaluation: EvaluationRequest = {
-        evaluationCategory: this.filterCategory,
-        evaluationSubject: this.filterSubject,
-        evaluationPart: this.filterPart
+      let semester: SemesterRequest = {
+        semesterPart: this.filterPart,
+        semesterStatus: this.filterStatus
       };
-      let evaluations: EvaluationResponse[] = [];
+      let semesters: SemesterResponse[] = [];
       
-      this.internCoreService.filterEvaluations(evaluation).subscribe({
+      this.internCommonService.filterSemesters(semester).subscribe({
         next: (res) => {
           if (this.appUtilityService.isObjectNotEmpty(res.data)) {
-            evaluations = res.data.evaluations
+            semesters = res.data.semesters
           }
           
           callback({
             recordsTotal: 0,
             recordsfilter: 0,
-            data: evaluations
+            data: semesters
           });
         },
         error: (err) => {
@@ -107,10 +109,46 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
 
     this.dtOptions.columnDefs = [
       {
-        targets: 1,
+        targets: 0,
+        orderable: false,
+        className: "th-w-sm",
+        render: function (data, type, row, meta) {
+          let select = document.createElement('select') as HTMLSelectElement;
+          select.classList.add('form-select');
+          select.classList.add('form-select-sm');
+
+          let option_def = document.createElement('option') as HTMLOptionElement;
+          option_def.value = '';
+          option_def.hidden = true;
+
+          let option_iac = document.createElement('option') as HTMLOptionElement;
+          option_iac.value = 'IAC';
+          option_iac.innerHTML = 'INACTIVE';
+
+          let option_act = document.createElement('option') as HTMLOptionElement;
+          option_act.value = 'ACT';
+          option_act.innerHTML = 'ACTIVE';
+
+          select.appendChild(option_def);
+          select.appendChild(option_iac);
+          select.appendChild(option_act);
+          
+          switch (row.semesterStatus) {
+            case 'IAC':
+              option_iac.setAttribute('selected', 'true');
+              break;
+            case 'ACT':
+              option_act.setAttribute('selected', 'true');
+              break;
+          }
+
+          return select.outerHTML;
+        }
+      }, {
+        targets: 2,
         orderable: false,
         render: function (data, type, row, meta) {
-          switch (row.evaluationPart) {
+          switch (row.semesterPart) {
             case 'PART_6':
               return 'PART 6';
               break;
@@ -124,32 +162,23 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
         }
       }, {
         targets: 3,
+        className: "th-w-md",
         render: function (data, type, row, meta) {
-          let span = document.createElement('span') as HTMLSpanElement;
-          span.classList.add('rounded-pill');
-          span.classList.add('badge-style');
-
-          let i = document.createElement('i') as HTMLElement;
-          i.classList.add('fa');
-          i.classList.add('fa-circle');
-          i.classList.add('me-2');
-
-          switch (row.evaluationCategory) {
-            case 'ACD':
-              span.classList.add('badge-orange');
-              span.innerHTML = i.outerHTML + 'Academic';
-              break;
-            case 'IND':
-              span.classList.add('badge-purple');
-              span.innerHTML = i.outerHTML + 'Industry';
-              break;
-            case 'COD':
-              span.classList.add('badge-teal');
-              span.innerHTML = i.outerHTML + 'Coordinator';
-              break;
+          if (row.semesterStartEvaluateDate) {
+            return new Date(row.semesterStartEvaluateDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.semesterStartEvaluateDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          } else {
+            return '';
           }
-
-          return span.outerHTML;
+        }
+      }, {
+        targets: 4,
+        className: "th-w-md",
+        render: function (data, type, row, meta) {
+          if (row.semesterEndEvaluateDate) {
+            return new Date(row.semesterEndEvaluateDate).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(row.semesterEndEvaluateDate).toLocaleString('default', { hour12: true, timeStyle: "short" });
+          } else {
+            return '';
+          }
         }
       }, {
         targets: -1,
@@ -162,7 +191,7 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
           viewButton.classList.add('btn-sm');
           viewButton.classList.add('me-1');
           
-          viewButton.setAttribute('href', `/dashboard/evaluation/view/${row.evaluationId}`);
+          viewButton.setAttribute('href', `/dashboard/semester/view/${row.semesterId}`);
           viewButton.innerHTML = 'View';
 
           let updateButton = document.createElement('a') as HTMLAnchorElement;
@@ -189,11 +218,24 @@ export class EvaluationDatatableComponent implements AfterViewInit, OnDestroy, O
     ];
 
     this.dtOptions.rowCallback = (row: Node, data: any[] | Object, index: number) => {
+      $('td:first-child .form-select', row).off('change');
+      $('td:first-child .form-select', row).on('change', (event) => {
+        let semester: SemesterResponse = data as SemesterResponse;
+        let select = event.target as HTMLSelectElement;
+
+        let semesterRequest: SemesterRequest = {
+          semesterId: semester.semesterId,
+          semesterStatus: select.value
+        }
+        
+        this.onUpdateStatus.emit(semesterRequest);
+      });
+
       $('td:last-child #updateBtn', row).off('click');
       $('td:last-child #updateBtn', row).on('click', () => {
         this.onUpdate.emit(data);
       });
-
+      
       $('td:last-child #deleteBtn', row).off('click');
       $('td:last-child #deleteBtn', row).on('click', () => {
         this.onDelete.emit(data);

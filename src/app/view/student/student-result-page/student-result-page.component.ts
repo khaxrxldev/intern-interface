@@ -51,7 +51,7 @@ export class StudentResultPageComponent implements OnInit {
       }
     });
 
-    this.getEvaluationList();
+    // this.getEvaluationList();
   }
 
   getEvaluationList() {

@@ -38,14 +38,26 @@
                 </button>
               </div>
             </div>
-            <div class="col-lg-6 col-12">
+            <div class="col-lg-3 col-12">
+              <div class="input-group">
+                <select #partSelect [ngClass]="{'filter-success': partSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                  <option value="" selected hidden>Part</option>
+                  <option value="PART_6">PART 6</option>
+                  <option value="PART_7">PART 7</option>
+                </select>
+                <button [disabled]="!partSelect.value" [ngClass]="{'filter-success': partSelect.value}" (click)="partSelect.value = ''; datatable.reRender()" class="input-group-text">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-3 col-12">
               <!-- <app-button-group class="float-end" [btnTxt]="'Export'" [btnIcn]="'fa-file-excel-o'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group> -->
             </div>
           </div>
         </li>
       </ul>
       <div class="card-body p-1 overflow-auto">
-        <app-evaluation-datatable [filterCategory]="categorySelect.value" [filterSubject]="subjectSelect.value" #datatable (onUpdate)="onSetForm($event)" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.evaluationId"></app-evaluation-datatable>
+        <app-evaluation-datatable [filterCategory]="categorySelect.value" [filterSubject]="subjectSelect.value" [filterPart]="partSelect.value" #datatable (onUpdate)="onSetForm($event)" (onDelete)="modal.open(modal.childContent); deleteId.value = $event.evaluationId"></app-evaluation-datatable>
       </div>
     </div>
     </div>
@@ -67,7 +79,7 @@
           </div>
         </div>
         <div class="row g-2 py-1">
-          <div class="col-lg-6 col-12">
+          <div class="col-lg-4 col-12">
             <label for="evaluationCategory" class="form-label mb-1">Category</label>
             <select class="form-select form-select-sm" formControlName="evaluationCategory" id="evaluationCategory" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationCategory', 'required', submitStatus)}">
               <option value="" selected hidden></option>
@@ -78,7 +90,18 @@
               <span *ngIf="appUtilityService.checkFormGroupHasError(evaluationFormGroup, 'evaluationCategory', 'required')">Category is required</span>
             </div>
           </div>
-          <div class="col-lg-6 col-12">
+          <div class="col-lg-4 col-12">
+            <label for="evaluationPart" class="form-label mb-1">Part</label>
+            <select class="form-select form-select-sm" formControlName="evaluationPart" id="evaluationPart" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationPart', 'required', submitStatus)}">
+              <option value="" selected hidden></option>
+              <option value="PART_6">PART 6</option>
+              <option value="PART_7">PART 7</option>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(evaluationFormGroup, 'evaluationPart', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(evaluationFormGroup, 'evaluationPart', 'required')">Part is required</span>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12">
             <label for="evaluationSubject" class="form-label mb-1">Subject</label>
             <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="evaluationSubject" id="evaluationSubject" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(evaluationFormGroup, 'evaluationSubject', 'required', submitStatus)}">
             <div *ngIf="appUtilityService.checkFormGroupSubmitted(evaluationFormGroup, 'evaluationSubject', submitStatus)" class="form-label-error w-100 mt-1">

@@ -168,14 +168,22 @@ export class StudentListPageComponent implements OnInit {
         } else {
           this.toast.open(res.error_desc!, 'danger');
         }
-
-        this.student = {};
-        this.getFilterList();
-        this.submitStatus = false;
-        this.studentFormGroup.reset();
       },
       error: (err) => {
         console.log(err);
+      },
+      complete: () => {
+        this.internCoreService.insertStudentEvaluations(this.studentFormGroup.controls['studentMatricNum'].value).subscribe({
+          next: (res) => {
+            this.student = {};
+            this.getFilterList();
+            this.submitStatus = false;
+            this.studentFormGroup.reset();
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        });
       }
     });
   }

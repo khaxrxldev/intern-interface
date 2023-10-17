@@ -26,7 +26,7 @@
   <div class="col-lg-12 col-12 content-col-str border">
     <div class="w-100 p-2 border-start border-5">
       <b>Evaluation List</b>
-      <app-button-group *ngIf="userType == 'COD'" (click)="evaluationModal.open(evaluationModal.childContent)" style="margin-top: -3px;" class="float-end" [btnTxt]="'Add'" [btnIcn]="'fa-plus'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group>
+      <!-- <app-button-group *ngIf="userType == 'COD'" (click)="evaluationModal.open(evaluationModal.childContent)" style="margin-top: -3px;" class="float-end" [btnTxt]="'Add'" [btnIcn]="'fa-plus'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group> -->
     </div>
     <div class="w-100 p-2 border-top overflow-auto bg-white">
       <app-student-evaluation-datatable #datatable (onDelete)="deleteModal.open(deleteModal.childContent); deleteId.value = $event.studentEvaluationId" (onEvaluate)="questionModal.open(questionModal.childContent); onGetCompleteEvaluation($event.evaluationId, $event.studentEvaluationId); studentEvaluation = $event"></app-student-evaluation-datatable>

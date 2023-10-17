@@ -1,4 +1,5 @@
 import { EvaluationResponse } from "./EvaluationResponse";
+import { SemesterResponse } from "./SemesterResponse";
 
 export interface StudentEvaluationResponse {
   studentEvaluationId?: string,
@@ -15,5 +16,7 @@ export interface StudentEvaluationResponse {
   evaluation?: EvaluationResponse
   studentMatricNum?: string,
   academicSvId?: string,
-  industrySvId?: string
+  industrySvId?: string,
+  semesterId?: string,
+  semester?: SemesterResponse
 }

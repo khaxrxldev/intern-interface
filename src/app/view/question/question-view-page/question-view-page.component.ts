@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CriteriaResponse } from 'src/app/model/Response/CriteriaResponse';
-import { EvaluationResponse } from 'src/app/model/Response/EvaluationResponse';
 import { QuestionResponse } from 'src/app/model/Response/QuestionResponse';
 import { AppUtilityService } from 'src/app/service/app-utility.service';
 import { InternCommonService } from 'src/app/service/intern-common.service';
