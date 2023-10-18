@@ -8,6 +8,7 @@ import { StudentEvaluationRequest } from '../model/Request/StudentEvaluationRequ
 import { CriteriaRequest } from '../model/Request/CriteriaRequest';
 import { ResultRequest } from '../model/Request/ResultRequest';
 import { StudentRequest } from '../model/Request/StudentRequest';
+import { SemesterRequest } from '../model/Request/SemesterRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -122,9 +123,12 @@ export class InternCoreService {
     return this.httpClient.post<Response>(`${intern_core_service.studentsEvaluations}/filter`, postData);
   }
 
-  insertStudentEvaluations(studentMatricNum: string) {
+  insertStudentEvaluations(semesters: SemesterRequest[], studentMatricNum: string) {
     const postData = new FormData();
 
+    postData.append('semesters', new Blob([JSON.stringify(semesters)], {
+      type: 'application/json',
+    }));
     postData.append('studentMatricNum', studentMatricNum);
 
     return this.httpClient.post<Response>(intern_core_service.studentsEvaluations, postData);

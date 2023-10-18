@@ -140,4 +140,15 @@ export class InternCommonService {
   deleteSemesterBySemesterId(semesterId: string) {
     return this.httpClient.delete<Response>(intern_common_service.semester + `/${semesterId}`);
   }
+
+  insertStudentSemesters(semesterIds: string[], studentMatricNum: string) {
+    const postData = new FormData();
+
+    postData.append('semesterIdList', new Blob([JSON.stringify(semesterIds)], {
+      type: 'application/json',
+    }));
+    postData.append('studentMatricNum', studentMatricNum);
+
+    return this.httpClient.post<Response>(intern_common_service.studentsSemesters, postData);
+  }
 }

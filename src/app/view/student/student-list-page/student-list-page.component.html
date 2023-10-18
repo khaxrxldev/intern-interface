@@ -110,7 +110,7 @@
           <div class="col-lg-4 col-12">
             <label for="studentPhone" class="form-label mb-1">Phone number</label>
             <div class="input-group input-group-sm">
-              <span class="input-group-text">+60</span>
+              <span class="input-group-text" [ngClass]="{'border-danger': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentPhone', 'required', submitStatus)}">+60</span>
               <input type="text" class="form-control" formControlName="studentPhone" id="studentPhone" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentPhone', 'required', submitStatus)}">
             </div>
             <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'studentPhone', submitStatus)" class="form-label-error w-100 mt-1">
@@ -121,21 +121,24 @@
         <div class="row g-2 py-1">
           <div class="col-lg-4 col-12">
             <label for="studentCampus" class="form-label mb-1">Campus</label>
-            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentCampus" id="studentCampus" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCampus', 'required', submitStatus)}">
+            <app-search-select [formGroup]="studentFormGroup" [formControlName]="'studentCampus'"[formGroupId]="'campusId'" [formGroupError]="appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCampus', 'required', submitStatus)" [options]="(campusList$ | async)!"></app-search-select>
+            <!-- <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentCampus" id="studentCampus" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCampus', 'required', submitStatus)}"> -->
             <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'studentCampus', submitStatus)" class="form-label-error w-100 mt-1">
               <span *ngIf="appUtilityService.checkFormGroupHasError(studentFormGroup, 'studentCampus', 'required')">Campus is required</span>
             </div>
           </div>
           <div class="col-lg-4 col-12">
             <label for="studentCourse" class="form-label mb-1">Course</label>
-            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentCourse" id="studentCourse" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCourse', 'required', submitStatus)}">
+            <app-search-select [formGroup]="studentFormGroup" [formControlName]="'studentCourse'"[formGroupId]="'courseId'" [formGroupError]="appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCourse', 'required', submitStatus)" [options]="(courseList$ | async)!"></app-search-select>
+            <!-- <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentCourse" id="studentCourse" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentCourse', 'required', submitStatus)}"> -->
             <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'studentCourse', submitStatus)" class="form-label-error w-100 mt-1">
               <span *ngIf="appUtilityService.checkFormGroupHasError(studentFormGroup, 'studentCourse', 'required')">Course is required</span>
             </div>
           </div>
           <div class="col-lg-4 col-12">
             <label for="studentClass" class="form-label mb-1">Class</label>
-            <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentClass" id="studentClass" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentClass', 'required', submitStatus)}">
+            <app-search-select [formGroup]="studentFormGroup" [formControlName]="'studentClass'"[formGroupId]="'classId'" [formGroupError]="appUtilityService.checkFormGroupValid(studentFormGroup, 'studentClass', 'required', submitStatus)" [options]="(classList$ | async)!"></app-search-select>
+            <!-- <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentClass" id="studentClass" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'studentClass', 'required', submitStatus)}"> -->
             <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'studentClass', submitStatus)" class="form-label-error w-100 mt-1">
               <span *ngIf="appUtilityService.checkFormGroupHasError(studentFormGroup, 'studentClass', 'required')">Class is required</span>
             </div>
@@ -174,6 +177,32 @@
           <div class="col-lg-12 col-12">
             <label for="studentProject" class="form-label mb-1">Project</label>
             <input oninput="this.value = this.value.toUpperCase()" type="text" class="form-control form-control-sm" formControlName="studentProject" id="studentProject">
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label for="part6Semester" class="form-label mb-1">Semester</label>
+            <select class="form-select form-select-sm" formControlName="part6Semester" id="part6Semester" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'part6Semester', 'required', submitStatus)}">
+              <option value="" selected hidden>PART 6</option>
+              <ng-container *ngFor="let semester of semesters">
+                <option *ngIf="semester.semesterPart == 'PART_6'" [value]="semester.semesterId">{{ semester.semesterCode }}</option>
+              </ng-container>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'part6Semester', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(studentFormGroup, 'part6Semester', 'required')">Semester is required</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label for="part7Semester" class="form-label mb-1">&nbsp;</label>
+            <select class="form-select form-select-sm" formControlName="part7Semester" id="part7Semester" [ngClass]="{'is-invalid': appUtilityService.checkFormGroupValid(studentFormGroup, 'part7Semester', 'required', submitStatus)}">
+              <option value="" selected hidden>PART 7</option>
+              <ng-container *ngFor="let semester of semesters">
+                <option *ngIf="semester.semesterPart == 'PART_7'" [value]="semester.semesterId">{{ semester.semesterCode }}</option>
+              </ng-container>
+            </select>
+            <div *ngIf="appUtilityService.checkFormGroupSubmitted(studentFormGroup, 'part7Semester', submitStatus)" class="form-label-error w-100 mt-1">
+              <span *ngIf="appUtilityService.checkFormGroupHasError(studentFormGroup, 'part7Semester', 'required')">Semester is required</span>
+            </div>
           </div>
         </div>
         <div class="row g-0 py-1">
