@@ -8,7 +8,9 @@ export const intern_common_service = {
   question: `${domain}${intern_common_service_port}/common/question`,
   questions: `${domain}${intern_common_service_port}/common/questions`,
   semester: `${domain}${intern_common_service_port}/common/semester`,
-  semesters: `${domain}${intern_common_service_port}/common/semesters`
+  semesters: `${domain}${intern_common_service_port}/common/semesters`,
+  studentSemester: `${domain}${intern_common_service_port}/common/student/semester`,
+  studentsSemesters: `${domain}${intern_common_service_port}/common/students/semesters`
 }
 
 export const intern_common_reactive_service = {

@@ -81,6 +81,30 @@
           <input type="text" class="form-control form-control-sm" [value]="student.studentProject" disabled>
         </div>
       </div>
+      <div class="row g-2 py-1">
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">Semester</label>
+          <ng-container *ngFor="let studentSemester of student.studentSemesters">
+            <select class="form-select form-select-sm" *ngIf="studentSemester.semester?.semesterPart == 'PART_6'" disabled>
+              <option value="" selected hidden></option>
+              <ng-container *ngFor="let semester of semesters">
+                <option [selected]="studentSemester.semester?.semesterId == semester.semesterId" *ngIf="semester.semesterPart == 'PART_6'" [value]="semester.semesterId">{{ semester.semesterCode }}</option>
+              </ng-container>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-lg-6 col-12">
+          <label class="form-label mb-1">&nbsp;</label>
+          <ng-container *ngFor="let studentSemester of student.studentSemesters">
+            <select class="form-select form-select-sm" *ngIf="studentSemester.semester?.semesterPart == 'PART_7'" disabled>
+              <option value="" selected hidden></option>
+              <ng-container *ngFor="let semester of semesters">
+                <option [selected]="studentSemester.semester?.semesterId == semester.semesterId" *ngIf="semester.semesterPart == 'PART_7'" [value]="semester.semesterId">{{ semester.semesterCode }}</option>
+              </ng-container>
+            </select>
+          </ng-container>
+        </div>
+      </div>
       <div class="row g-0 py-1">
         <div class="col-lg-3 col-12">
           <label class="form-label mb-1 mt-5px">Resume</label>

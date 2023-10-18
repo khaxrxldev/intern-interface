@@ -12,6 +12,12 @@ import { EvaluationResponse } from 'src/app/model/Response/EvaluationResponse';
 import { StudentDatatableComponent } from '../student-datatable/student-datatable.component';
 import { AcademicSupervisorResponse } from 'src/app/model/Response/AcademicSupervisorResponse';
 import { IndustrySupervisorResponse } from 'src/app/model/Response/IndustrySupervisorResponse';
+import { SemesterResponse } from 'src/app/model/Response/SemesterResponse';
+import { InternCommonService } from 'src/app/service/intern-common.service';
+import { EMPTY, map, of, switchMap } from 'rxjs';
+import { SemesterRequest } from 'src/app/model/Request/SemesterRequest';
+import { StudentSemesterResponse } from 'src/app/model/Response/StudentSemesterResponse';
+import { InternUserReactiveService } from 'src/app/service/intern-user-reactive.service';
 
 @Component({
   selector: 'app-student-list-page',
@@ -28,13 +34,29 @@ export class StudentListPageComponent implements OnInit {
   academicSupervisors: AcademicSupervisorResponse[] = [];
   industrySupervisors: IndustrySupervisorResponse[] = [];
 
+  semesters: SemesterResponse[] = [];
   campusList: string[] = [];
   courseList: string[] = [];
   classList: string[] = [];
   
   options: OptionContent[] = [];
 
-  constructor(public appUtilityService: AppUtilityService, private internUserService: InternUserService, private internCoreService: InternCoreService) {
+  campusList$ = this.internUserReactiveService.getStudents().pipe(
+    map(res => res.map(a => a.studentCampus!)),
+    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
+  )
+
+  courseList$ = this.internUserReactiveService.getStudents().pipe(
+    map(res => res.map(a => a.studentCourse!)),
+    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
+  )
+
+  classList$ = this.internUserReactiveService.getStudents().pipe(
+    map(res => res.map(a => a.studentClass!)),
+    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
+  )
+
+  constructor(public appUtilityService: AppUtilityService, private internUserService: InternUserService, private internUserReactiveService: InternUserReactiveService, private internCoreService: InternCoreService, private internCommonService: InternCommonService) {
     this.userType = sessionStorage.getItem('userType')!;
   }
 
@@ -64,7 +86,7 @@ export class StudentListPageComponent implements OnInit {
     this.internUserService.filterAcademicSupervisors({}).subscribe({
       next: (res) => {
         if (this.appUtilityService.isObjectNotEmpty(res.data)) {
-          this.academicSupervisors = res.data.academicSupervisors
+          this.academicSupervisors = res.data.academicSupervisors;
         }
       },
       error: (err) => {
@@ -75,7 +97,18 @@ export class StudentListPageComponent implements OnInit {
     this.internUserService.filterIndustrySupervisors({}).subscribe({
       next: (res) => {
         if (this.appUtilityService.isObjectNotEmpty(res.data)) {
-          this.industrySupervisors = res.data.industrySupervisors
+          this.industrySupervisors = res.data.industrySupervisors;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+    this.internCommonService.retrieveSemesters().subscribe({
+      next: (res) => {
+        if (this.appUtilityService.isObjectNotEmpty(res.data)) {
+          this.semesters = res.data.semesters.sort(this.appUtilityService.sortArrayOfObjectByProp('semesterCode'));
         }
       },
       error: (err) => {
@@ -129,7 +162,9 @@ export class StudentListPageComponent implements OnInit {
     studentSL: new FormControl(null, [ InputFileType.validateFileType(['pdf']) ]),
     industrySvId: new FormControl(null, []),
     academicSvId: new FormControl(null, []),
-    coordinatorId: new FormControl(null, [])
+    coordinatorId: new FormControl(null, []),
+    part6Semester: new FormControl('', [ Validators.required ]),
+    part7Semester: new FormControl('', [ Validators.required ])
   });
 
   onSubmitForm(cvInputFile: HTMLInputElement, mtInputFile: HTMLInputElement, clInputFile: HTMLInputElement, coInputFile: HTMLInputElement, slInputFile: HTMLInputElement) {
@@ -160,7 +195,44 @@ export class StudentListPageComponent implements OnInit {
     let coFile: File = coInputFile.files ? coInputFile.files![0]: new File([], '');
     let slFile: File = slInputFile.files ? slInputFile.files![0]: new File([], '');
 
-    this.internUserService.insertStudent(student, cvFile, mtFile, clFile, coFile, slFile).subscribe({
+    this.internUserService.insertStudent(student, cvFile, mtFile, clFile, coFile, slFile).pipe(
+      switchMap((res) => {
+        let semesterIds: string[] = [
+          this.studentFormGroup.controls['part6Semester'].value,
+          this.studentFormGroup.controls['part7Semester'].value
+        ];
+
+        if (this.appUtilityService.isObjectNotEmpty(res.data)) {
+          return this.internCommonService.insertStudentSemesters(semesterIds, res.data.student.studentMatricNum)
+        } else {
+          return EMPTY;
+        }
+      }),
+      switchMap((res) => {
+        if (this.appUtilityService.isObjectNotEmpty(res.data)) {
+          let semesters: SemesterRequest[] = [];
+
+          res.data.studentSemesters.forEach((studentSemester: StudentSemesterResponse) => {
+            let semester: SemesterRequest = {
+              semesterId: studentSemester?.semester?.semesterId,
+              semesterCode: studentSemester?.semester?.semesterCode,
+              semesterPart: studentSemester?.semester?.semesterPart,
+              semesterStatus: studentSemester?.semester?.semesterStatus,
+              semesterStartDate: studentSemester?.semester?.semesterStartDate,
+              semesterEndDate: studentSemester?.semester?.semesterEndDate,
+              semesterStartEvaluateDate: studentSemester?.semester?.semesterStartEvaluateDate,
+              semesterEndEvaluateDate: studentSemester?.semester?.semesterEndEvaluateDate
+            }
+
+            semesters.push(semester);
+          });
+
+          return this.internCoreService.insertStudentEvaluations(semesters, this.studentFormGroup.controls['studentMatricNum'].value);
+        } else {
+          return EMPTY;
+        }
+      })
+    ).subscribe({
       next: (res) => {
         if (this.appUtilityService.isObjectNotEmpty(res.data)) {
           this.toast.open(res.message_desc!, 'success');
@@ -168,22 +240,14 @@ export class StudentListPageComponent implements OnInit {
         } else {
           this.toast.open(res.error_desc!, 'danger');
         }
+        
+        this.student = {};
+        this.getFilterList();
+        this.submitStatus = false;
+        this.studentFormGroup.reset();
       },
       error: (err) => {
         console.log(err);
-      },
-      complete: () => {
-        this.internCoreService.insertStudentEvaluations(this.studentFormGroup.controls['studentMatricNum'].value).subscribe({
-          next: (res) => {
-            this.student = {};
-            this.getFilterList();
-            this.submitStatus = false;
-            this.studentFormGroup.reset();
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        });
       }
     });
   }
@@ -202,6 +266,19 @@ export class StudentListPageComponent implements OnInit {
     this.studentFormGroup.controls['industrySvId'].setValue(student.industrySvId);
     this.studentFormGroup.controls['academicSvId'].setValue(student.academicSvId);
     this.studentFormGroup.controls['coordinatorId'].setValue(student.coordinatorId);
+
+    if (student.studentSemesters?.length) {
+      student.studentSemesters.forEach((studentSemester: StudentSemesterResponse) => {
+        switch (studentSemester.semester?.semesterPart) {
+          case 'PART_6':
+            this.studentFormGroup.controls['part6Semester'].setValue(studentSemester.semesterId);
+            break;
+          case 'PART_7':
+            this.studentFormGroup.controls['part7Semester'].setValue(studentSemester.semesterId);
+            break;
+        }
+      })
+    }
   }
 
   students: StudentRequest[] = [];
