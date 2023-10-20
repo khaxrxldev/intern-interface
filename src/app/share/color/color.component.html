@@ -1,0 +1,7 @@
+<div style="width: 80%; height: 300px; margin: auto;">
+  <div *ngFor="let color of [].constructor(colorSize);" class="position-relative border" [ngStyle]="{'width.%': (100 / colorSize), 'height': '100%', 'float': 'left', 'margin-left': '-1px'}">
+    <div class="p-2" style="position: absolute; left: 0px; right: 0px; bottom: 0px;">
+      <input (input)="setBGColor($event)" type="text" class="form-control form-control-sm w-100">
+    </div>
+  </div>
+</div>
