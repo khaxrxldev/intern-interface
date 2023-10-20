@@ -1,0 +1,16 @@
+#graphContainer {
+  margin: 80px auto;
+  width: 50%;
+  aspect-ratio: 1.5 / 1;
+}
+
+.rectangle {
+  stroke-width: 1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.rectangle:hover {
+  fill-opacity: 90%;
+  cursor: pointer !important;
+}

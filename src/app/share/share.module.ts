@@ -12,6 +12,8 @@ import { InputDatetimeComponent } from './input-datetime/input-datetime.componen
 import { MultiSelectFilterComponent } from './multi-select-filter/multi-select-filter.component';
 import { PipeModule } from "../pipe/pipe.module";
 import { SearchSelectComponent } from './search-select/search-select.component';
+import { GraphComponent } from './graph/graph.component';
+import { ColorComponent } from './color/color.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +25,9 @@ import { SearchSelectComponent } from './search-select/search-select.component';
       ToastComponent,
       InputDatetimeComponent,
       MultiSelectFilterComponent,
-      SearchSelectComponent
+      SearchSelectComponent,
+      GraphComponent,
+      ColorComponent
     ],
     exports: [
       ModalComponent,
@@ -34,7 +38,9 @@ import { SearchSelectComponent } from './search-select/search-select.component';
       ToastComponent,
       InputDatetimeComponent,
       MultiSelectFilterComponent,
-      SearchSelectComponent
+      SearchSelectComponent,
+      GraphComponent,
+      ColorComponent
     ],
     imports: [
       CommonModule,

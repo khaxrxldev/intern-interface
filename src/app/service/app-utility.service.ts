@@ -15,7 +15,7 @@ export class AppUtilityService {
    * @function
    * @name fixDateTimezone
    * @param date
-   * @returns Date
+   * @return Date
    */
   fixDateTimezone(date: Date): Date {
     return date;
@@ -285,7 +285,57 @@ export class AppUtilityService {
     }
   }
 
+  /**
+   * @function
+   * @description Pad the number with '0' at the beginning.
+   * @param number Number to be padded with '0'.
+   * @param place Amount of '0' to be padded.
+   * @returns Padded number with '0' in string type.
+   */
   zeroPadToNumber(number: number, place: number) {
     return String(number).padStart(place, '0');
+  }
+
+  /**
+   * @function
+   * @description Extract the Red, Green & Blue (RGB) value from the hex code value.
+   * @name hexCodeToRGB
+   * @param hexCodeColor e.g: #000
+   * @return Return the RGB value of the hex color code.
+   */
+  hexCodeToRGB(hexCodeColor: string): number[] {
+    let color = hexCodeColor.replace('#', '');
+
+    /**
+     * - Check hex color code length (true - shorthand).
+     * ~ e.g: #000
+     * $ Double the hex color code value.
+     */
+    if (color.length < 4) {
+      color = color + color;
+    }
+
+    let rgb: number[] = [
+      parseInt(color.substring(1, 2), 16),
+      parseInt(color.substring(3, 2), 16),
+      parseInt(color.substring(5, 2), 16)
+    ];
+    
+    return rgb;
+  }
+
+  /**
+   * @function
+   * @description Provide color that has sufficient contrast to the accepted color (e.g: background-color).
+   * @name setContrast
+   * @param hexCodeColor e.g: #000
+   * @return Return color black (#000) or white (#fff) depending on the calculated value.
+   */
+  setContrast(hexCodeColor: string) {
+    let rgb: number[] = this.hexCodeToRGB(hexCodeColor);
+
+    // ~ https://www.w3.org/TR/AERT/#color-contrast
+    const brightness = Math.round(((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000);
+    return (brightness > 125) ? '#000' : '#fff';
   }
 }
