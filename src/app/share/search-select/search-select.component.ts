@@ -11,7 +11,7 @@ export class SearchSelectComponent implements OnInit {
   @Input() options: string[] = [];
   @Input() formGroup!: FormGroup;
   @Input() formGroupId!: string;
-  @Input() formControlName!: string;
+  @Input() formControlString!: string;
   @Input() formGroupError!: boolean;
 
   filterOptions: string[] = [];
@@ -52,7 +52,7 @@ export class SearchSelectComponent implements OnInit {
   setInputValue(evt: any) {
     let searchInput = document.getElementById(this.formGroupId) as HTMLInputElement;
     searchInput.value = evt.target.innerHTML;
-    this.formGroup.controls[this.formControlName].setValue(searchInput.value);
+    this.formGroup.controls[this.formControlString].setValue(searchInput.value);
     this.selectContent = false;
   }
 }

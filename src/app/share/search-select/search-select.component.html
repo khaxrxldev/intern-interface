@@ -1,7 +1,7 @@
-<ng-container [formGroup]="formGroup">
+<ng-container *ngIf="formControlString" [formGroup]="formGroup">
   <div class="select">
     <div class="input-group">
-      <input [ngClass]="{'is-invalid': formGroupError}" [formControl]="appUtilityService.getFormControl(formGroup, formControlName)" [id]="formGroupId" oninput="this.value = this.value.toUpperCase()" (keyup)="setFilterOptions($event)" (mousedown)="setFilterOptions($event)" autocomplete="off" type="text" class="select-input form-control form-control-sm" (focus)="selectContent = true">
+      <input [ngClass]="{'is-invalid': formGroupError}" [formControl]="appUtilityService.getFormControl(formGroup, formControlString)" [id]="formGroupId" oninput="this.value = this.value.toUpperCase()" (keyup)="setFilterOptions($event)" (mousedown)="setFilterOptions($event)" autocomplete="off" type="text" class="select-input form-control form-control-sm" (focus)="selectContent = true">
       <span [ngClass]="{'border-danger': formGroupError}" class="select-icon input-group-text">
         <i class="fa fa-search"></i>
       </span>
