@@ -58,7 +58,7 @@ export class InternUserReactiveService {
     .pipe(
       map(res => this.appUtilityService.isObjectNotEmpty(res.data) ? res.data['response'] : res.data),
       map((res: AcademicSupervisorResponse[]) => {
-        return res.sort(this.appUtilityService.sortObjectAscByProperty('academicSvName'));
+        return res.sort(this.appUtilityService.sortArrayOfObjectByProperty('ASC', 'academicSvName'));
       }),
       shareReplay()
     );
@@ -89,7 +89,7 @@ export class InternUserReactiveService {
     .pipe(
       map(res => this.appUtilityService.isObjectNotEmpty(res.data) ? res.data['response'] : res.data),
       map((res: IndustrySupervisorResponse[]) => {
-        return res.sort(this.appUtilityService.sortObjectAscByProperty('industrySvName'));
+        return res.sort(this.appUtilityService.sortArrayOfObjectByProperty('ASC', 'industrySvName'));
       }),
       shareReplay()
     );

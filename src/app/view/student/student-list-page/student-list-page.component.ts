@@ -14,7 +14,7 @@ import { AcademicSupervisorResponse } from 'src/app/model/Response/AcademicSuper
 import { IndustrySupervisorResponse } from 'src/app/model/Response/IndustrySupervisorResponse';
 import { SemesterResponse } from 'src/app/model/Response/SemesterResponse';
 import { InternCommonService } from 'src/app/service/intern-common.service';
-import { EMPTY, map, of, switchMap } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 import { SemesterRequest } from 'src/app/model/Request/SemesterRequest';
 import { StudentSemesterResponse } from 'src/app/model/Response/StudentSemesterResponse';
 import { InternUserReactiveService } from 'src/app/service/intern-user-reactive.service';
@@ -40,21 +40,6 @@ export class StudentListPageComponent implements OnInit {
   classList: string[] = [];
   
   options: OptionContent[] = [];
-
-  campusList$ = this.internUserReactiveService.getStudents().pipe(
-    map(res => res.map(a => a.studentCampus!)),
-    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
-  )
-
-  courseList$ = this.internUserReactiveService.getStudents().pipe(
-    map(res => res.map(a => a.studentCourse!)),
-    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
-  )
-
-  classList$ = this.internUserReactiveService.getStudents().pipe(
-    map(res => res.map(a => a.studentClass!)),
-    switchMap(res => of(res.filter((item, index) => res.indexOf(item) === index).sort()))
-  )
 
   constructor(public appUtilityService: AppUtilityService, private internUserService: InternUserService, private internUserReactiveService: InternUserReactiveService, private internCoreService: InternCoreService, private internCommonService: InternCommonService) {
     this.userType = sessionStorage.getItem('userType')!;

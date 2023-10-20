@@ -9,18 +9,6 @@ export class AppUtilityService {
 
   constructor() { }
 
-  /**
-   * https://jsdoc.app/index.html
-   * fix date timezone
-   * @function
-   * @name fixDateTimezone
-   * @param date
-   * @return Date
-   */
-  fixDateTimezone(date: Date): Date {
-    return date;
-  }
-
   formatDate(ISODateString: string): string {
     let ISODate: Date = new Date(ISODateString);
     return ISODate.toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase();
@@ -31,6 +19,16 @@ export class AppUtilityService {
     return ISODate.toLocaleString('en-GB', { timeStyle: 'short', hour12: true }).toUpperCase();
   }
 
+  /**
+   * @function setInputDate
+   * @param dateDD
+   * @param dateMM 
+   * @param dateYY 
+   * @param timeHH 
+   * @param timeMM 
+   * @param timeAMPM 
+   * @returns Provide date in string type, in YYYY:MM:DD:HH:MM format by combining the all the parameters.
+   */
   setInputDate(dateDD: string, dateMM: string, dateYY: string, timeHH: string, timeMM: string, timeAMPM: string) {
     let HH24String = '';
 
@@ -42,6 +40,16 @@ export class AppUtilityService {
     return dateYY + ':' + String(+dateMM - 1).padStart(2, '0') + ':' + String(dateDD).padStart(2, '0') + ':' + String(HH24String).padStart(2, '0') + ':' + String(timeMM).padStart(2, '0');
   }
 
+  /**
+   * @function setDate
+   * @param dateDD 
+   * @param dateMM 
+   * @param dateYY 
+   * @param timeHH 
+   * @param timeMM 
+   * @param timeAMPM 
+   * @returns Provide date in string type, in YYYY-MM-DD HH:MM format by combining the all the parameters.
+   */
   setDate(dateDD: string, dateMM: string, dateYY: string, timeHH: string, timeMM: string, timeAMPM: string) {
     let HH24String = '';
 
@@ -164,9 +172,18 @@ export class AppUtilityService {
     }).join(' ');
   }
 
-  sortObjectAscByProperty(propertyName: string) {
+  sortArrayOfObjectByProperty(order: string, propertyName: string) {
     return function (a: any, b: any) {
-      return ((a[propertyName] < b[propertyName]) ? -1 : (a[propertyName] > b[propertyName]) ? 1 : 0) * 1;
+      switch (order) {
+        case 'ASC':
+          return ((a[propertyName] < b[propertyName]) ? -1 : (a[propertyName] > b[propertyName]) ? 1 : 0) * 1;
+          break;
+        case 'DEC':
+          return ((a[propertyName] > b[propertyName]) ? -1 : (a[propertyName] > b[propertyName]) ? 1 : 0) * 1;
+          break;
+      }
+
+      return 0;
     }
   }
 
