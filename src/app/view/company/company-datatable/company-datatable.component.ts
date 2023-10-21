@@ -100,16 +100,16 @@ export class CompanyDatatableComponent implements AfterViewInit, OnDestroy, OnIn
           infoButton.classList.add('btn-primary');
           infoButton.classList.add('btn-sm');
           infoButton.classList.add('me-2');
+          infoButton.title = 'Website';
 
           infoButton.setAttribute('href', row.companyWebsite);
           infoButton.setAttribute('target', '_blank');
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-info');
-          icon.classList.add('mx-1');
+          let infoImg = document.createElement('img') as HTMLImageElement;
+          infoImg.src = '../../../../assets/icons/share-box-line.svg';
+          infoImg.style.marginTop = '-2px';
 
-          infoButton.innerHTML = icon.outerHTML;
+          infoButton.innerHTML = infoImg.outerHTML;
           
           if (row.companyWebsite) {
             return infoButton.outerHTML + row.companyName;
@@ -126,12 +126,13 @@ export class CompanyDatatableComponent implements AfterViewInit, OnDestroy, OnIn
           emailButton.classList.add('btn-sm');
           emailButton.classList.add('me-2');
           emailButton.setAttribute('id', 'emailBtn');
+          emailButton.title = 'Email';
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-envelope-o');
+          let emailImg = document.createElement('img') as HTMLImageElement;
+          emailImg.src = '../../../../assets/icons/mail-line.svg';
+          emailImg.style.marginTop = '-2px';
 
-          emailButton.innerHTML = icon.outerHTML;
+          emailButton.innerHTML = emailImg.outerHTML;
           
           return emailButton.outerHTML + row.companyHrName;
         }
@@ -145,27 +146,42 @@ export class CompanyDatatableComponent implements AfterViewInit, OnDestroy, OnIn
           viewButton.classList.add('btn-info');
           viewButton.classList.add('btn-sm');
           viewButton.classList.add('me-1');
-          
+          viewButton.title = 'Detail';
+
+          let viewImg = document.createElement('img') as HTMLImageElement;
+          viewImg.src = '../../../../assets/icons/file-list-line.svg';
+          viewImg.style.marginTop = '-2px';
+
           viewButton.setAttribute('href', `/dashboard/company/view/${row.companyId}`);
-          viewButton.innerHTML = 'View';
+          viewButton.innerHTML = viewImg.outerHTML;
 
           let updateButton = document.createElement('a') as HTMLAnchorElement;
           updateButton.classList.add('btn');
           updateButton.classList.add('btn-warning');
           updateButton.classList.add('btn-sm');
           updateButton.classList.add('me-1');
-          
+          updateButton.title = 'Update';
+
+          let updateImg = document.createElement('img') as HTMLImageElement;
+          updateImg.src = '../../../../assets/icons/edit-line.svg';
+          updateImg.style.marginTop = '-2px';
+
           updateButton.setAttribute('id', 'updateBtn');
-          updateButton.innerHTML = 'Edit';
+          updateButton.innerHTML = updateImg.outerHTML;
 
           let deleteButton = document.createElement('a') as HTMLAnchorElement;
           deleteButton.classList.add('btn');
           deleteButton.classList.add('btn-danger');
           deleteButton.classList.add('btn-sm');
           deleteButton.classList.add('me-1');
+          deleteButton.title = 'Delete';
+
+          let deleteImg = document.createElement('img') as HTMLImageElement;
+          deleteImg.src = '../../../../assets/icons/delete-bin-line.svg';
+          deleteImg.style.marginTop = '-2px';
 
           deleteButton.setAttribute('id', 'deleteBtn');
-          deleteButton.innerHTML = 'Delete';
+          deleteButton.innerHTML = deleteImg.outerHTML;
 
           return viewButton.outerHTML + updateButton.outerHTML + deleteButton.outerHTML;
         }

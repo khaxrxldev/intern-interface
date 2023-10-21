@@ -169,12 +169,13 @@ export class StudentDatatableComponent implements AfterViewInit, OnDestroy, OnIn
           emailButton.classList.add('btn-sm');
           emailButton.classList.add('me-2');
           emailButton.setAttribute('id', 'emailBtn');
+          emailButton.title = 'Email';
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-envelope-o');
+          let emailImg = document.createElement('img') as HTMLImageElement;
+          emailImg.src = '../../../../assets/icons/mail-line.svg';
+          emailImg.style.marginTop = '-2px';
 
-          emailButton.innerHTML = icon.outerHTML;
+          emailButton.innerHTML = emailImg.outerHTML;
           
           return emailButton.outerHTML + row.studentEmail;
         }
@@ -188,29 +189,42 @@ export class StudentDatatableComponent implements AfterViewInit, OnDestroy, OnIn
           viewButton.classList.add('btn-info');
           viewButton.classList.add('btn-sm');
           viewButton.classList.add('me-1');
-
           viewButton.setAttribute('href', `/dashboard/student/view/${row.studentMatricNum}`);
+          viewButton.title = 'Detail';
 
-          viewButton.innerHTML = 'View';
+          let viewImg = document.createElement('img') as HTMLImageElement;
+          viewImg.src = '../../../../assets/icons/file-list-line.svg';
+          viewImg.style.marginTop = '-2px';
+
+          viewButton.innerHTML = viewImg.outerHTML;
 
           let updateButton = document.createElement('a') as HTMLAnchorElement;
           updateButton.classList.add('btn');
           updateButton.classList.add('btn-warning');
           updateButton.classList.add('btn-sm');
           updateButton.classList.add('me-1');
-
           updateButton.setAttribute('id', 'updateBtn');
-          updateButton.innerHTML = 'Edit';
+          updateButton.title = 'Update';
+
+          let updateImg = document.createElement('img') as HTMLImageElement;
+          updateImg.src = '../../../../assets/icons/edit-line.svg';
+          updateImg.style.marginTop = '-2px';
+
+          updateButton.innerHTML = updateImg.outerHTML;
 
           let resultButton = document.createElement('a') as HTMLAnchorElement;
           resultButton.classList.add('btn');
           resultButton.classList.add('btn-primary');
           resultButton.classList.add('btn-sm');
           resultButton.classList.add('me-1');
-
           resultButton.setAttribute('href', `/dashboard/student/result/${row.studentMatricNum}`);
+          resultButton.title = 'Evaluate';
 
-          resultButton.innerHTML = 'Evaluation';
+          let resultImg = document.createElement('img') as HTMLImageElement;
+          resultImg.src = '../../../../assets/icons/draft-line-white.svg';
+          resultImg.style.marginTop = '-2px';
+
+          resultButton.innerHTML = resultImg.outerHTML;
 
           switch (sessionStorage.getItem('userType')) {
             case 'COD':

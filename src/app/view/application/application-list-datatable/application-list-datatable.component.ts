@@ -94,22 +94,22 @@ export class ApplicationListDatatableComponent implements AfterViewInit, OnDestr
       {
         targets: 0,
         render: function (data, type, row, meta) {
-          let applyButton = document.createElement('a') as HTMLAnchorElement;
-          applyButton.classList.add('btn');
-          applyButton.classList.add('btn-info');
-          applyButton.classList.add('btn-sm');
-          applyButton.classList.add('me-2');
+          let displayButton = document.createElement('a') as HTMLAnchorElement;
+          displayButton.classList.add('btn');
+          displayButton.classList.add('btn-info');
+          displayButton.classList.add('btn-sm');
+          displayButton.classList.add('me-2');
 
-          applyButton.setAttribute('id', 'displayBtn');
+          displayButton.setAttribute('id', 'displayBtn');
+          displayButton.title = 'Information';
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-info');
-          icon.classList.add('mx-1');
+          let displayImg = document.createElement('img') as HTMLImageElement;
+          displayImg.src = '../../../../assets/icons/file-info-line.svg';
+          displayImg.style.marginTop = '-2px';
 
-          applyButton.innerHTML = icon.outerHTML;
+          displayButton.innerHTML = displayImg.outerHTML;
           
-          return applyButton.outerHTML + row.companyName;
+          return displayButton.outerHTML + row.companyName;
         }
       }, {
         targets: -1,
@@ -122,7 +122,13 @@ export class ApplicationListDatatableComponent implements AfterViewInit, OnDestr
           applyButton.classList.add('btn-sm');
 
           applyButton.setAttribute('id', 'applyBtn');
-          applyButton.innerHTML = 'Apply';
+          applyButton.title = 'Apply';
+
+          let applyImg = document.createElement('img') as HTMLImageElement;
+          applyImg.src = '../../../../assets/icons/mail-add-line.svg';
+          applyImg.style.marginTop = '-2px';
+
+          applyButton.innerHTML = applyImg.outerHTML;
 
           if (row.companyApplyBtn) {
             return applyButton.outerHTML;
