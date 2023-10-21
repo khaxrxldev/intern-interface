@@ -245,9 +245,6 @@ table.datatable td {
 #print img {
   object-fit: contain;
 }
-#print td {
-  border: 1px solid rgba(0, 0, 0, 0.3) !important;
-}
 
 #print table {
   width: 100%;
@@ -256,7 +253,13 @@ table.datatable td {
 
 #print td {
   padding: 10px;
+  font-size: 0.8em;
   white-space: normal;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#print .border-none {
+  border: none;
 }
 
 #print .td-w-10pct {
@@ -271,8 +274,8 @@ table.datatable td {
   width: 25%;
 }
 
-#print .td-w-25pct {
-  width: 25%;
+#print .td-w-55pct {
+  width: 55%;
 }
 
 #print .td-w-70pct {
@@ -288,7 +291,19 @@ table.datatable td {
 }
 
 #print .td-bg-color-ccc {
-  background-color: #cccccc;
+  background-color: #ccc;
+}
+
+#print .td-color-fff {
+  color: #fff;
+}
+
+#print .td-bg-color-61116A {
+  background-color: #61116A;
+}
+
+#print .td-bg-color-211D70 {
+  background-color: #211D70;
 }
 
 #print .td-fw-bold {
