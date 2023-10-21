@@ -174,16 +174,17 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
           attachBtn.classList.add('btn-sm');
           attachBtn.classList.add('me-2');
           attachBtn.setAttribute('id', 'attachBtn');
+          attachBtn.title = 'Document';
 
           if (!row.studentEvaluationAttach) {
             attachBtn.disabled = true;
           }
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-file-o');
+          let attachImg = document.createElement('img') as HTMLImageElement;
+          attachImg.src = '../../../../assets/icons/file-line.svg';
+          attachImg.style.marginTop = '-2px';
 
-          attachBtn.innerHTML = icon.outerHTML;
+          attachBtn.innerHTML = attachImg.outerHTML;
 
           let resultBtn = document.createElement('a') as HTMLAnchorElement;
           resultBtn.classList.add('btn');
@@ -191,8 +192,13 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
           resultBtn.classList.add('btn-sm');
           resultBtn.classList.add('m-1');
           resultBtn.setAttribute('id', 'resultBtn');
+          resultBtn.title = 'Result';
 
-          resultBtn.innerHTML = 'Result';
+          let resultImg = document.createElement('img') as HTMLImageElement;
+          resultImg.src = '../../../../assets/icons/bar-chart-box-line.svg';
+          resultImg.style.marginTop = '-2px';
+
+          resultBtn.innerHTML = resultImg.outerHTML;
 
           let evaluateBtn = document.createElement('button') as HTMLButtonElement;
           evaluateBtn.classList.add('btn');
@@ -200,6 +206,11 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
           evaluateBtn.classList.add('btn-sm');
           evaluateBtn.classList.add('m-1');
           evaluateBtn.setAttribute('id', 'evaluateBtn');
+          evaluateBtn.title = 'Evaluate';
+
+          let evaluateImg = document.createElement('img') as HTMLImageElement;
+          evaluateImg.src = '../../../../assets/icons/draft-line-black.svg';
+          evaluateImg.style.marginTop = '-2px';
 
           if (row.semester) {
             let fromDate: Date = new Date(row.semester.semesterStartEvaluateDate);
@@ -210,7 +221,7 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
             }
           }
           
-          evaluateBtn.innerHTML = 'Evaluate';
+          evaluateBtn.innerHTML = evaluateImg.outerHTML;
 
           let deleteBtn = document.createElement('a') as HTMLAnchorElement;
           deleteBtn.classList.add('btn');
@@ -218,8 +229,13 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
           deleteBtn.classList.add('btn-sm');
           deleteBtn.classList.add('m-1');
           deleteBtn.setAttribute('id', 'deleteBtn');
+          deleteBtn.title = 'Delete';
 
-          deleteBtn.innerHTML = 'Delete';
+          let deleteImg = document.createElement('img') as HTMLImageElement;
+          deleteImg.src = '../../../../assets/icons/delete-bin-line.svg';
+          deleteImg.style.marginTop = '-2px';
+
+          deleteBtn.innerHTML = deleteImg.outerHTML;
 
           switch (sessionStorage.getItem('userType')) {
             case 'COD':

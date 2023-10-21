@@ -99,22 +99,22 @@ export class ApplicationResultDatatableComponent implements AfterViewInit, OnDes
         targets: 0,
         orderable: false,
         render: function (data, type, row, meta) {
-          let applyButton = document.createElement('a') as HTMLAnchorElement;
-          applyButton.classList.add('btn');
-          applyButton.classList.add('btn-info');
-          applyButton.classList.add('btn-sm');
-          applyButton.classList.add('me-2');
+          let displayButton = document.createElement('a') as HTMLAnchorElement;
+          displayButton.classList.add('btn');
+          displayButton.classList.add('btn-info');
+          displayButton.classList.add('btn-sm');
+          displayButton.classList.add('me-2');
 
-          applyButton.setAttribute('id', 'displayBtn');
+          displayButton.setAttribute('id', 'displayBtn');
+          displayButton.title = 'Information';
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-info');
-          icon.classList.add('mx-1');
+          let displayImg = document.createElement('img') as HTMLImageElement;
+          displayImg.src = '../../../../assets/icons/file-info-line.svg';
+          displayImg.style.marginTop = '-2px';
 
-          applyButton.innerHTML = icon.outerHTML;
+          displayButton.innerHTML = displayImg.outerHTML;
           
-          return applyButton.outerHTML + row.company.companyName;
+          return displayButton.outerHTML + row.company.companyName;
         }
       }, {
         targets: 1,

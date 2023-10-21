@@ -104,12 +104,13 @@ export class CompanySupervisorDatatableComponent implements AfterViewInit, OnDes
           emailButton.classList.add('btn-sm');
           emailButton.classList.add('me-2');
           emailButton.setAttribute('id', 'emailBtn');
+          emailButton.title = 'Email';
 
-          let icon = document.createElement('i') as HTMLIFrameElement;
-          icon.classList.add('fa');
-          icon.classList.add('fa-envelope-o');
+          let emailImg = document.createElement('img') as HTMLImageElement;
+          emailImg.src = '../../../../assets/icons/mail-line.svg';
+          emailImg.style.marginTop = '-2px';
 
-          emailButton.innerHTML = icon.outerHTML;
+          emailButton.innerHTML = emailImg.outerHTML;
           
           return emailButton.outerHTML + row.industrySvEmail;
         }
