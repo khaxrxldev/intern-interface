@@ -14,6 +14,7 @@ import { PipeModule } from "../pipe/pipe.module";
 import { SearchSelectComponent } from './search-select/search-select.component';
 import { GraphComponent } from './graph/graph.component';
 import { ColorComponent } from './color/color.component';
+import { DatatableComponent } from './datatable/datatable.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { ColorComponent } from './color/color.component';
       MultiSelectFilterComponent,
       SearchSelectComponent,
       GraphComponent,
-      ColorComponent
+      ColorComponent,
+      DatatableComponent
     ],
     exports: [
       ModalComponent,
@@ -40,7 +42,8 @@ import { ColorComponent } from './color/color.component';
       MultiSelectFilterComponent,
       SearchSelectComponent,
       GraphComponent,
-      ColorComponent
+      ColorComponent,
+      DatatableComponent
     ],
     imports: [
       CommonModule,

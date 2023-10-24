@@ -1,0 +1,56 @@
+<div class="row g-0">
+  <div class="col-lg-1 col-12 my-1">
+    <select #selectRowSize (change)="rowSize = +selectRowSize.value; renderTable(sortTable(sortColumn, data))" class="form-select form-select-sm">
+      <option [selected]="rowSize == rowSizeOption" *ngFor="let rowSizeOption of rowSizeOptions" [value]="rowSizeOption">{{ rowSizeOption }}</option>
+    </select>
+  </div>
+  <div class="col-lg-8 col-12"></div>
+  <div class="col-lg-3 col-12 my-1">
+    <div class="input-group">
+      <input id="input" type="text" class="form-control form-control-sm">
+      <span class="select-icon input-group-text">
+        <i class="fa fa-search"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<table class="custom-datatable w-100">
+  <thead *ngIf="customColumn" [innerHTML]="customColumnContent | trustHTML"></thead>
+  <thead *ngIf="!customColumn">
+    <tr>
+      <ng-container *ngFor="let column of columns; index as i">
+        <th [ngClass]="{'cursor-pointer': column.columnSortable}" *ngIf="column.columnSortable" (click)="setTableColumnOrder(i)">
+          <span>{{ column.columnTitle }}</span>
+          <ng-container *ngIf="sortColumn == i">
+            <ng-container *ngIf="sortOrder === 'ASC'">
+              <i class="fa fa-sort-asc float-end" style="margin-top: 2px;"></i>
+            </ng-container>
+            <ng-container *ngIf="sortOrder === 'DEC'">
+              <i class="fa fa-sort-desc float-end" style="margin-top: 2px;"></i>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="sortColumn != i">
+            <i class="fa fa-sort float-end text-secondary" style="margin-top: 2px;"></i>
+          </ng-container>
+        </th>
+        <th *ngIf="!column.columnSortable">
+          <span>{{ column.columnTitle }}</span>
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of tableData">
+      <ng-container *ngFor="let column of columns">
+        <ng-container [ngSwitch]="column.columnDisplay">
+          <td *ngSwitchCase="'DB'">{{ data[column.columnName!] }}</td>
+          <td *ngSwitchCase="'HTML'" [innerHTML]="data[column.columnName!] | trustHTML"></td>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+<div class="float-end my-1">
+  <button class="btn btn-secondary me-1" id="prev"><i class="fa fa-chevron-left"></i></button>
+  <button class="btn btn-secondary" id="next"><i class="fa fa-chevron-right"></i></button>
+</div>
