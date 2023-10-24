@@ -14,6 +14,43 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item p-1">
             <div class="row g-1">
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <select id="classSelect" #classSelect [ngClass]="{'filter-success': classSelect.value}" (change)="getStudentResults()" class="form-select form-select-sm">
+                    <option value="" selected hidden>Class</option>
+                    <option *ngFor="let class of (classList$ | async)">{{ class }}</option>
+                  </select>
+                  <button [disabled]="!classSelect.value" [ngClass]="{'filter-success': classSelect.value}" (click)="classSelect.value = ''; getStudentResults()" class="input-group-text">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <select id="statusSelect" #statusSelect [ngClass]="{'filter-success': statusSelect.value}" (change)="getStudentResults()" class="form-select form-select-sm">
+                    <option value="" selected hidden>Status</option>
+                    <option value="CMP">Complete</option>
+                    <option value="PND">Pending</option>
+                  </select>
+                  <button [disabled]="!statusSelect.value" [ngClass]="{'filter-success': statusSelect.value}" (click)="statusSelect.value = ''; getStudentResults()" class="input-group-text">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-6 col-12"></div>
+            </div>
+          </li>
+        </ul>
+        <div class="card-body p-0 px-1 overflow-auto">
+          <app-datatable #ResultDatatable *ngIf="(studentResultsDatatable$ | async) as studentResults" [data]="studentResults" [columns]="columns" [customColumn]="true" [customColumnContent]="customColumnString"></app-datatable>
+        </div>
+      </div>
+      <br>
+      <!--
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-1">
+            <div class="row g-1">
               <div class="col-lg-9 col-12"></div>
               <div class="col-lg-3 col-12">
                 <div class="input-group">
@@ -67,10 +104,10 @@
               <th>GRADE</th>
               <th>POINTER</th>
             </tr>
-            <tr *ngFor="let studentResult of (studentResult$ | async)">
-              <td>{{ studentResult.student?.studentMatricNum }}</td>
-              <td><a [href]="'/dashboard/student/result/' + studentResult.student?.studentMatricNum">{{ studentResult.student?.studentName }}</a></td>
-              <td>{{ studentResult.student?.studentClass }}</td>
+            <tr *ngFor="let studentResult of (studentResults$ | async)">
+              <td>{{ studentResult?.studentMatricNum }}</td>
+              <td><a [href]="'/dashboard/student/result/' + studentResult?.studentMatricNum">{{ studentResult?.studentName }}</a></td>
+              <td>{{ studentResult?.studentClass }}</td>
               <td [ngSwitch]="studentResult.studentEvaluationsStatus">
                 <span *ngSwitchCase="'CMP'" class="rounded-pill badge-style badge-success">
                   <i class="fa fa-circle me-2"></i>Complete
@@ -101,6 +138,7 @@
           </table>
         </div>
       </div>
+      -->
     </div>
   </div>
 </div>
