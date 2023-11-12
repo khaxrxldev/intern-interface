@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map, of, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, map, of, switchMap, tap } from 'rxjs';
 import { StudentRequest } from 'src/app/model/Request/StudentRequest';
 import { AcademicSupervisorResponse } from 'src/app/model/Response/AcademicSupervisorResponse';
 import { IndustrySupervisorResponse } from 'src/app/model/Response/IndustrySupervisorResponse';
@@ -59,13 +59,11 @@ export class StudentAccountComponent implements OnInit {
 
   getSupervisors() {
     this.academicSV$ = this.internUserReactiveService.getStudent(sessionStorage.getItem('userId')!).pipe(
-      map(res => res.academicSvId),
-      switchMap(academicSvId => this.getAcademicSV$(academicSvId!))
+      switchMap(res => res ? this.getAcademicSV$(res.academicSvId!) : EMPTY)
     );
 
     this.industrySV$ = this.internUserReactiveService.getStudent(sessionStorage.getItem('userId')!).pipe(
-      map(res => res.industrySvId),
-      switchMap(industrySvId => this.getIndustrySV$(industrySvId!))
+      switchMap(res => res ? this.getIndustrySV$(res.industrySvId!) : EMPTY)
     );
 
     this.campusList$ = this.internUserReactiveService.getStudents().pipe(
@@ -95,18 +93,20 @@ export class StudentAccountComponent implements OnInit {
   getStudent() {
     this.student$ = this.internUserReactiveService.getStudent(sessionStorage.getItem('userId')!).pipe(
       map((res) => {
-        this.studentFormGroup.controls['studentMatricNum'].setValue(res.studentMatricNum);
-        this.studentFormGroup.controls['studentName'].setValue(res.studentName);
-        this.studentFormGroup.controls['studentAddress'].setValue(res.studentAddress);
-        this.studentFormGroup.controls['studentEmail'].setValue(res.studentEmail);
-        this.studentFormGroup.controls['studentPhone'].setValue(res.studentPhone);
-        this.studentFormGroup.controls['studentPassword'].setValue(res.studentPassword);
-        this.studentFormGroup.controls['studentCampus'].setValue(res.studentCampus);
-        this.studentFormGroup.controls['studentCourse'].setValue(res.studentCourse);
-        this.studentFormGroup.controls['studentClass'].setValue(res.studentClass);
-        this.studentFormGroup.controls['studentProject'].setValue(res.studentProject);
-        this.studentFormGroup.controls['industrySvId'].setValue(res.industrySvId);
-        this.studentFormGroup.controls['academicSvId'].setValue(res.academicSvId);
+        if (res) {
+          this.studentFormGroup.controls['studentMatricNum'].setValue(res.studentMatricNum);
+          this.studentFormGroup.controls['studentName'].setValue(res.studentName);
+          this.studentFormGroup.controls['studentAddress'].setValue(res.studentAddress);
+          this.studentFormGroup.controls['studentEmail'].setValue(res.studentEmail);
+          this.studentFormGroup.controls['studentPhone'].setValue(res.studentPhone);
+          this.studentFormGroup.controls['studentPassword'].setValue(res.studentPassword);
+          this.studentFormGroup.controls['studentCampus'].setValue(res.studentCampus);
+          this.studentFormGroup.controls['studentCourse'].setValue(res.studentCourse);
+          this.studentFormGroup.controls['studentClass'].setValue(res.studentClass);
+          this.studentFormGroup.controls['studentProject'].setValue(res.studentProject);
+          this.studentFormGroup.controls['industrySvId'].setValue(res.industrySvId);
+          this.studentFormGroup.controls['academicSvId'].setValue(res.academicSvId);
+        }
 
         return res;
       })

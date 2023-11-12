@@ -9,8 +9,8 @@
     <div class="w-100 p-2 border-start border-5">
       <b>Student Details</b>
     </div>
-    <div class="w-100 p-2 border-top bg-white">
-      <form *ngIf="student$ | async as student" [formGroup]="studentFormGroup" (ngSubmit)="updateStudent(studentCV, studentMiniTranscript, studentCoverLetter, studentCourseOutline, studentSL)">
+    <div *ngIf="student$ | async as student" class="w-100 p-2 border-top bg-white">
+      <form [formGroup]="studentFormGroup" (ngSubmit)="updateStudent(studentCV, studentMiniTranscript, studentCoverLetter, studentCourseOutline, studentSL)">
         <div class="row g-2 py-1">
           <div class="col-lg-6 col-12">
             <label for="studentName" class="form-label mb-1">Full name</label>
