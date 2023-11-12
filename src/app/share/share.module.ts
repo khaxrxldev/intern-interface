@@ -15,6 +15,7 @@ import { SearchSelectComponent } from './search-select/search-select.component';
 import { GraphComponent } from './graph/graph.component';
 import { ColorComponent } from './color/color.component';
 import { DatatableComponent } from './datatable/datatable.component';
+import { InlineOverflowElementComponent } from './inline-overflow-element/inline-overflow-element.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { DatatableComponent } from './datatable/datatable.component';
       SearchSelectComponent,
       GraphComponent,
       ColorComponent,
-      DatatableComponent
+      DatatableComponent,
+      InlineOverflowElementComponent
     ],
     exports: [
       ModalComponent,
@@ -43,7 +45,8 @@ import { DatatableComponent } from './datatable/datatable.component';
       SearchSelectComponent,
       GraphComponent,
       ColorComponent,
-      DatatableComponent
+      DatatableComponent,
+      InlineOverflowElementComponent
     ],
     imports: [
       CommonModule,

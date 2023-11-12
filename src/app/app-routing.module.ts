@@ -4,6 +4,7 @@ import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { CompanyApprovalComponent } from './page/company-approval/company-approval.component';
 import { SignInComponent } from './page/sign-in/sign-in.component';
 import { SignUpComponent } from './page/sign-up/sign-up.component';
+import { BlankComponent } from './page/blank/blank.component';
 
 const canMatchFn: CanMatchFn = (route: Route, segments: UrlSegment[]) => {
   const router: Router = inject(Router);
@@ -68,6 +69,9 @@ const routes: Routes = [
   }, {
     path: 'company-approval/:applicationId',
     component: CompanyApprovalComponent
+  }, {
+    path: 'blank',
+    component: BlankComponent
   }
 ];
 

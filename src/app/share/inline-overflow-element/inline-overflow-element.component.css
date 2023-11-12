@@ -1,0 +1,24 @@
+.grid-container {
+  width: 100%;
+  height: 80px;
+  display: grid;
+}
+.grid-layout {
+  grid-template-columns: 5% 5% 80% 5% 5%;
+}
+.grid-item-container {
+  overflow: auto;
+  white-space: nowrap;
+  border: 1px solid blue;
+}
+.grid-item {
+  height: 100%;
+  width: 200px;
+  border: solid 1px red;
+  display: inline-block;
+}
+@media screen and (max-width: 600px) {
+  .grid-layout {
+    grid-template-columns: 10% 10% 60% 10% 10%;
+  }
+}

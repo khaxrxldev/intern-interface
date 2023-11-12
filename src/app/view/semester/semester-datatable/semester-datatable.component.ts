@@ -111,38 +111,57 @@ export class SemesterDatatableComponent implements AfterViewInit, OnDestroy, OnI
       {
         targets: 0,
         orderable: false,
-        className: "th-w-sm",
+        className: "align-center",
         render: function (data, type, row, meta) {
-          let select = document.createElement('select') as HTMLSelectElement;
-          select.classList.add('form-select');
-          select.classList.add('form-select-sm');
+          let divSwitch = document.createElement('div') as HTMLDivElement;
+          divSwitch.classList.add('form-check');
+          divSwitch.classList.add('form-switch');
+          divSwitch.classList.add('ms-4');
+          divSwitch.style.transformOrigin = 'left top';
+          divSwitch.style.scale = '1.5';
 
-          let option_def = document.createElement('option') as HTMLOptionElement;
-          option_def.value = '';
-          option_def.hidden = true;
+          let inputSwitch = document.createElement('input') as HTMLInputElement;
+          inputSwitch.type = 'checkbox';
+          inputSwitch.classList.add('form-check-input');
 
-          let option_iac = document.createElement('option') as HTMLOptionElement;
-          option_iac.value = 'IAC';
-          option_iac.innerHTML = 'INACTIVE';
-
-          let option_act = document.createElement('option') as HTMLOptionElement;
-          option_act.value = 'ACT';
-          option_act.innerHTML = 'ACTIVE';
-
-          select.appendChild(option_def);
-          select.appendChild(option_iac);
-          select.appendChild(option_act);
-          
-          switch (row.semesterStatus) {
-            case 'IAC':
-              option_iac.setAttribute('selected', 'true');
-              break;
-            case 'ACT':
-              option_act.setAttribute('selected', 'true');
-              break;
+          if (row.semesterStatus == 'ACT') {
+            inputSwitch.setAttribute('checked', 'checked');
           }
 
-          return select.outerHTML;
+          divSwitch.innerHTML = inputSwitch.outerHTML;
+          
+          return divSwitch.outerHTML;
+
+          // let select = document.createElement('select') as HTMLSelectElement;
+          // select.classList.add('form-select');
+          // select.classList.add('form-select-sm');
+
+          // let option_def = document.createElement('option') as HTMLOptionElement;
+          // option_def.value = '';
+          // option_def.hidden = true;
+
+          // let option_iac = document.createElement('option') as HTMLOptionElement;
+          // option_iac.value = 'IAC';
+          // option_iac.innerHTML = 'INACTIVE';
+
+          // let option_act = document.createElement('option') as HTMLOptionElement;
+          // option_act.value = 'ACT';
+          // option_act.innerHTML = 'ACTIVE';
+
+          // select.appendChild(option_def);
+          // select.appendChild(option_iac);
+          // select.appendChild(option_act);
+          
+          // switch (row.semesterStatus) {
+          //   case 'IAC':
+          //     option_iac.setAttribute('selected', 'true');
+          //     break;
+          //   case 'ACT':
+          //     option_act.setAttribute('selected', 'true');
+          //     break;
+          // }
+
+          // return select.outerHTML;
         }
       }, {
         targets: 2,
@@ -233,14 +252,14 @@ export class SemesterDatatableComponent implements AfterViewInit, OnDestroy, OnI
     ];
 
     this.dtOptions.rowCallback = (row: Node, data: any[] | Object, index: number) => {
-      $('td:first-child .form-select', row).off('change');
-      $('td:first-child .form-select', row).on('change', (event) => {
+      $('td:first-child .form-check', row).off('change');
+      $('td:first-child .form-check', row).on('change', (event): any => {
         let semester: SemesterResponse = data as SemesterResponse;
-        let select = event.target as HTMLSelectElement;
-
+        let select = event.target as HTMLInputElement;
+        
         let semesterRequest: SemesterRequest = {
           semesterId: semester.semesterId,
-          semesterStatus: select.value
+          semesterStatus: select.checked ? "ACT" : "IAC"
         }
         
         this.onUpdateStatus.emit(semesterRequest);

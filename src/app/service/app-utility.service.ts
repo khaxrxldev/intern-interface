@@ -9,11 +9,19 @@ export class AppUtilityService {
 
   constructor() { }
 
+  /**
+   * @param ISODateString
+   * @returns
+   */
   formatDate(ISODateString: string): string {
     let ISODate: Date = new Date(ISODateString);
     return ISODate.toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase();
   }
 
+  /**
+   * @param ISODateString
+   * @returns
+   */
   formatTime(ISODateString: string): string {
     let ISODate: Date = new Date(ISODateString);
     return ISODate.toLocaleString('en-GB', { timeStyle: 'short', hour12: true }).toUpperCase();
@@ -61,11 +69,19 @@ export class AppUtilityService {
     return dateYY + '-' + dateMM + '-' + dateDD + ' ' + HH24String + ':' + timeMM;
   }
 
+  /**
+   * @param dateString
+   * @returns
+   */
   fixDateOffset(dateString: string) {
     let date = new Date(dateString);
     return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -1);
   }
 
+  /**
+   * @param ISODate
+   * @returns
+   */
   returnFormattedDate(ISODate: Date) {
     let date = ISODate.toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase()
     let time = new Intl.DateTimeFormat('default', { hour12: true, hour: 'numeric', minute: 'numeric' }).format(ISODate);
@@ -73,10 +89,20 @@ export class AppUtilityService {
     return date + ", " + time;
   }
 
+  /**
+   * @param dateString
+   * @returns
+   */
   returnDate(dateString: string) {
     return new Date(dateString).toLocaleString('en-GB', { dateStyle: "short" }).toUpperCase() + ", " + new Date(dateString).toLocaleString('default', { hour12: true, timeStyle: "short" });
   }
 
+  /**
+   * @param fromDate
+   * @param comparedDate
+   * @param toDate
+   * @returns
+   */
   checkDateInBetween(fromDate: Date, comparedDate: Date, toDate: Date) {
     if (fromDate.getTime() <= comparedDate.getTime() && toDate.getTime() >= comparedDate.getTime()) {
       return true;
@@ -93,7 +119,7 @@ export class AppUtilityService {
    */
   onDisplayFile(base64String: string): void {
     let pdfArrayBuffer = this.convertBase64ToArrayBuffer(base64String);
-    let pdfFile = new Blob([pdfArrayBuffer], {type:'application/pdf'});
+    let pdfFile = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
     let pdfFileURL = URL.createObjectURL(pdfFile);
     
     window.open(pdfFileURL, "_blank");
@@ -119,16 +145,38 @@ export class AppUtilityService {
     return bytes.buffer;
   }
 
+  /**
+   * @param URL
+   */
   onOpenURLNewWindow(URL: string) {
     window.open(URL, "_blank");
   }
 
-  isObjectEmpty(obj: Record<string, any>): boolean {
-    return Object.keys(obj).length === 0;
+  /**
+   * @param URL
+   */
+  onOpenPDFNewWindow(URL: string) {
+    window.open(URL, '_blank', 'left=0, top=0, width=800, height=900, toolbar=0, scrollbars=0, status=0');
   }
 
-  isObjectNotEmpty(obj: Record<string, any>): boolean {
-    return Object.keys(obj).length !== 0;
+  /**
+   * @param object
+   * @returns
+   */
+  isObjectEmpty(object: Record<string, any>): boolean {
+    return Object.keys(object).length === 0;
+  }
+
+  /**
+   * @param object
+   * @returns
+   */
+  isObjectNotEmpty(object: Record<string, any>): boolean {
+    if (object) {
+      return Object.keys(object).length !== 0;
+    } else {
+      return false;
+    }
   }
 
   checkFormGroupValid(formGroup: FormGroup, formControlName: string, errorType: string, submitStatus: boolean): boolean {
@@ -206,18 +254,31 @@ export class AppUtilityService {
     return data;
   }
 
-  textEllipsis(str: string, maxLength: number, { side = "END", ellipsis = "..." } = {}) {
-    if (str.length > maxLength) {
+  /**
+   * @param textString
+   * @param maxLength
+   * @param options
+   * @returns
+   */
+  textEllipsis(textString: string, maxLength: number, { side = "END", ellipsis = "..." } = {}) {
+    if (textString.length > maxLength) {
       switch (side) {
         case "STR":
-          return ellipsis + str.slice(-(maxLength - ellipsis.length));
+          return ellipsis + textString.slice(-(maxLength - ellipsis.length));
         case "END":
-          return str.slice(0, maxLength - ellipsis.length) + ellipsis;
+          return textString.slice(0, maxLength - ellipsis.length) + ellipsis;
       }
     }
-    return str;
+
+    return textString;
   }
   
+  /**
+   * @param JSONData
+   * @param objectArrayHeader
+   * @param fileHeader
+   * @param fileName
+   */
   downloadCSVFile(JSONData: any, objectArrayHeader: string[], fileHeader: string[], fileName: string) {
     let CSVData = this.convertToCSV(JSONData, objectArrayHeader, fileHeader);
     let blob = new Blob(['\ufeff' + CSVData], { type: 'text/csv;charset=utf-8;' });
@@ -236,6 +297,12 @@ export class AppUtilityService {
     document.body.removeChild(downloadLink);
   }
   
+  /**
+   * @param objectArray
+   * @param headerList
+   * @param headerName
+   * @returns
+   */
   convertToCSV(objectArray: any, headerList: string[], headerName: string[]) {
     let JSONArray = typeof objectArray != 'object' ? JSON.parse(objectArray) : objectArray;
     let str = '';
@@ -279,6 +346,10 @@ export class AppUtilityService {
     return str;
   }
 
+  /**
+   * @param data
+   * @returns
+   */
   replaceString(data: any) {
     if (!data) {
       return ' ';
@@ -356,9 +427,13 @@ export class AppUtilityService {
     return (brightness > 125) ? '#000' : '#fff';
   }
 
-  extractContent(s: string) {
+  /**
+   * @param contentString
+   * @returns
+   */
+  extractContent(contentString: string) {
     let span = document.createElement('span') as HTMLSpanElement;
-    span.innerHTML = s;
+    span.innerHTML = contentString;
     return span.textContent || span.innerText;
   };
 }
