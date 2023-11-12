@@ -1,0 +1,17 @@
+<div class="grid-container grid-layout border bg-white">
+  <div>
+    <button [disabled]="!gridItemContainer.scrollLeft" class="w-100 h-100" (click)="scrollToContent(0)"><<</button>
+  </div>
+  <div>
+    <button [disabled]="!gridItemContainer.scrollLeft" class="w-100 h-100" (click)="scrollContentDecrement()"><</button>
+  </div>
+  <div #gridItemContainer class="grid-item-container" id="scroll-container" [scrollLeft]="200">
+    <div class="grid-item" *ngFor="let item of stringArr; index as i" [id]="i" (click)="scrollToContent(i)">{{i}}</div>
+  </div>
+  <div>
+    <button [disabled]="(gridItemContainer.clientWidth + gridItemContainer.scrollLeft) >= (stringArr.length * 200)" class="w-100 h-100" (click)="scrollContentIncrement()">></button>
+  </div>
+  <div>
+    <button [disabled]="(gridItemContainer.clientWidth + gridItemContainer.scrollLeft) >= (stringArr.length * 200)" class="w-100 h-100" (click)="scrollToContent(stringArr.length - 1)">>></button>
+  </div>
+</div>

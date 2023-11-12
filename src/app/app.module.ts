@@ -13,6 +13,7 @@ import { LoaderComponent } from './page/loader/loader.component';
 import { ServiceInterceptor } from './service/service.interceptor';
 import { SignUpComponent } from './page/sign-up/sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BlankComponent } from './page/blank/blank.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DashboardComponent,
     SignInComponent,
     LoaderComponent,
-    SignUpComponent
+    SignUpComponent,
+    BlankComponent
   ],
   imports: [
     ShareModule,
