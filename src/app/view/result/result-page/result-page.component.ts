@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, map, of, switchMap } from 'rxjs';
+import { StudentResultRequest } from 'src/app/model/Request/StudentResultRequest';
 import { StudentResultResponse } from 'src/app/model/Response/StudentResultResponse';
 import { AppUtilityService } from 'src/app/service/app-utility.service';
 import { InternCoreService } from 'src/app/service/intern-core.service';
@@ -232,5 +233,21 @@ export class ResultPageComponent implements OnInit {
         }
       }       
     }
+  }
+
+  printResult(filterClass: string, filterEvaluationStatus: string) {
+    let studentResultRequest: StudentResultRequest = {
+      filterClass: filterClass,
+      filterEvaluationStatus: filterEvaluationStatus
+    };
+
+    this.internCoreService.printStudentResults(studentResultRequest).subscribe({
+      next: (res) => {
+        this.appUtilityService.onOpenPDFNewWindow(URL.createObjectURL(res.body!));
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 }

@@ -234,8 +234,13 @@
     <ng-container *ngIf="userType != 'COD'; else printBtn" >
       <app-button-group [disabledStatus]="disableSubmitEvaluationbtn" (click)="onSubmitEvaluation(evaluationModalBody, studentEvaluation.studentEvaluationId!); questionModal.close()" class="m-1" [btnTxt]="'Confirm'" [btnIcn]="'fa-check'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-success'" [btnBorderClass]="'border-success'"></app-button-group>
     </ng-container>
+    <!--
     <ng-template #printBtn>
       <app-button-group *ngIf="evaluation" (click)="printDiv(evaluationModalBody, evaluation.evaluation!.evaluationName!)" class="m-1" [btnTxt]="'Print'" [btnIcn]="'fa-print'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
+    </ng-template>
+    -->
+    <ng-template #printBtn>
+      <app-button-group [disabledStatus]="studentEvaluation.studentEvaluationStatus === 'INC'" *ngIf="evaluation" (click)="printResult(studentEvaluation.studentMatricNum!, studentEvaluation.evaluationId!, studentEvaluation.studentEvaluationId!)" class="m-1" [btnTxt]="'Print'" [btnIcn]="'fa-print'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-secondary'" [btnBorderClass]="'border-secondary'"></app-button-group>
     </ng-template>
   </div>
 </app-modal>

@@ -7,8 +7,8 @@ import { ApplicationRequest } from '../model/Request/ApplicationRequest';
 import { StudentEvaluationRequest } from '../model/Request/StudentEvaluationRequest';
 import { CriteriaRequest } from '../model/Request/CriteriaRequest';
 import { ResultRequest } from '../model/Request/ResultRequest';
-import { StudentRequest } from '../model/Request/StudentRequest';
 import { SemesterRequest } from '../model/Request/SemesterRequest';
+import { StudentResultRequest } from '../model/Request/StudentResultRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -111,6 +111,26 @@ export class InternCoreService {
 
   retrieveStudentResults() {
     return this.httpClient.get<Response>(`${intern_core_service.studentsEvaluations}/results`);
+  }
+
+  printStudentResult(studentMatricNum: string, evaluationId: string, studentEvaluationId: string) {
+    return this.httpClient.get<Blob>(`${intern_core_service.studentEvaluation}/result/pdf/${studentMatricNum}/${evaluationId}/${studentEvaluationId}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
+  }
+
+  printStudentResults(studentResultRequest: StudentResultRequest) {
+    const postData = new FormData();
+
+    postData.append('studentResultRequest', new Blob([JSON.stringify(studentResultRequest)], {
+      type: 'application/json',
+    }));
+
+    return this.httpClient.post<Blob>(`${intern_core_service.studentsEvaluations}/results/pdf`, postData, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 
   filterStudentEvaluations(studentEvaluation: StudentEvaluationRequest) {

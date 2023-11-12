@@ -288,6 +288,8 @@ export class StudentResultPageComponent implements OnInit {
     });
   }
 
+  /**
+   * ! Print rendered HTML element function
   printDiv(modalBody: HTMLDivElement, documentName: string) {
     let htmlDoc = '<html>';
     htmlDoc += '<link rel="stylesheet" type="text/css" href="../../../../styles.css"/>';
@@ -307,5 +309,17 @@ export class StudentResultPageComponent implements OnInit {
       newWindow?.print();
       newWindow?.close();
     }, 1000);
+  }
+  */
+
+  printResult(studentMatricNum: string, evaluationId: string, studentEvaluationId: string) {
+    this.internCoreService.printStudentResult(studentMatricNum, evaluationId, studentEvaluationId).subscribe({
+      next: (res) => {
+        this.appUtilityService.onOpenPDFNewWindow(URL.createObjectURL(res.body!));
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 }

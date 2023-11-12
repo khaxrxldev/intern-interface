@@ -118,13 +118,13 @@ export class DatatableComponent implements OnInit {
     this.renderTable(this.filterData);
   }
 
-  renderTable(testList: any[]) {
+  renderTable(dataList: any[]) {
     this.tableData = [];
 
     const start = this.currentPage * this.rowSize;
     const end = start + this.rowSize;
 
-    testList.forEach((row: any, index: number) => {
+    dataList.forEach((row: any, index: number) => {
       if (!(index < start || index >= end)) {
         this.tableData.push(row);
       }
