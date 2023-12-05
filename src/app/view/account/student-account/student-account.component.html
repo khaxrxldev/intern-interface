@@ -201,82 +201,86 @@
       </form>
     </div>
   </div>
-  <div class="col-lg-4 col-12 content-col-str border">
-    <div class="w-100 p-2 border-start border-5">
-      <b>Academic Supervisor</b>
-    </div>
-    <div *ngIf="academicSV$ | async as academicSV" class="w-100 p-2 border-top bg-white">
-      <div class="row g-2 py-1">
-        <div class="col-lg-12 col-12">
-          <label class="form-label mb-1">Full name</label>
-          <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvName" disabled>
-        </div>
+  <ng-container *ngIf="academicSV$ | async as academicSV">
+    <div *ngIf="appUtilityService.isObjectNotEmpty(academicSV)" class="col-lg-4 col-12 content-col-str border">
+      <div class="w-100 p-2 border-start border-5">
+        <b>Academic Supervisor</b>
       </div>
-      <div class="row g-2 py-1">
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Email</label>
-          <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvEmail" disabled>
+      <div class="w-100 p-2 border-top bg-white">
+        <div class="row g-2 py-1">
+          <div class="col-lg-12 col-12">
+            <label class="form-label mb-1">Full name</label>
+            <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvName" disabled>
+          </div>
         </div>
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Phone number</label>
-          <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvPhone" disabled>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvEmail" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Phone number</label>
+            <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvPhone" disabled>
+          </div>
         </div>
-      </div>
-      <div class="row g-2 py-1">
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Gender</label>
-          <select class="form-select form-select-sm" [value]="academicSV.academicSvGender" disabled>
-            <option value="MALE">MALE</option>
-            <option value="FEMALE">FEMALE</option>
-          </select>
-        </div>
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Position</label>
-          <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvPosition" disabled>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4 col-12 content-col-str border">
-    <div class="w-100 p-2 border-start border-5">
-      <b>Industry Supervisor</b>
-    </div>
-    <div *ngIf="industrySV$ | async as industrySV" class="w-100 p-2 border-top bg-white">
-      <div class="row g-2 py-1">
-        <div class="col-lg-12 col-12">
-          <label class="form-label mb-1">Full name</label>
-          <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvName" disabled>
-        </div>
-      </div>
-      <div class="row g-2 py-1">
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Email</label>
-          <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvEmail" disabled>
-        </div>
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Phone number</label>
-          <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvPhone" disabled>
-        </div>
-      </div>
-      <div class="row g-2 py-1">
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Gender</label>
-          <select class="form-select form-select-sm" [value]="industrySV.industrySvGender" disabled>
-            <option value="MALE">MALE</option>
-            <option value="FEMALE">FEMALE</option>
-          </select>
-        </div>
-        <div class="col-lg-6 col-12">
-          <label class="form-label mb-1">Position</label>
-          <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvPosition" disabled>
-        </div>
-      </div>
-      <div class="row g-2 py-1">
-        <div class="col-lg-12 col-12">
-          <label class="form-label mb-1">Company</label>
-          <input type="text" class="form-control form-control-sm" [value]="industrySV.company!.companyName" disabled>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Gender</label>
+            <select class="form-select form-select-sm" [value]="academicSV.academicSvGender" disabled>
+              <option value="MALE">MALE</option>
+              <option value="FEMALE">FEMALE</option>
+            </select>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Position</label>
+            <input type="text" class="form-control form-control-sm" [value]="academicSV.academicSvPosition" disabled>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-container *ngIf="industrySV$ | async as industrySV">
+    <div *ngIf="appUtilityService.isObjectNotEmpty(industrySV)" class="col-lg-4 col-12 content-col-str border">
+      <div class="w-100 p-2 border-start border-5">
+        <b>Industry Supervisor</b>
+      </div>
+      <div *ngIf="industrySV$ | async as industrySV" class="w-100 p-2 border-top bg-white">
+        <div class="row g-2 py-1">
+          <div class="col-lg-12 col-12">
+            <label class="form-label mb-1">Full name</label>
+            <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvName" disabled>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Email</label>
+            <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvEmail" disabled>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Phone number</label>
+            <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvPhone" disabled>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Gender</label>
+            <select class="form-select form-select-sm" [value]="industrySV.industrySvGender" disabled>
+              <option value="MALE">MALE</option>
+              <option value="FEMALE">FEMALE</option>
+            </select>
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="form-label mb-1">Position</label>
+            <input type="text" class="form-control form-control-sm" [value]="industrySV.industrySvPosition" disabled>
+          </div>
+        </div>
+        <div class="row g-2 py-1">
+          <div class="col-lg-12 col-12">
+            <label class="form-label mb-1">Company</label>
+            <input type="text" class="form-control form-control-sm" [value]="industrySV.company!.companyName" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
