@@ -165,7 +165,8 @@ export class IndustrySvDatatableComponent implements AfterViewInit, OnDestroy, O
           deleteButton.setAttribute('id', 'deleteBtn');
           deleteButton.innerHTML = deleteImg.outerHTML;
 
-          return viewButton.outerHTML + updateButton.outerHTML + deleteButton.outerHTML;
+          // return viewButton.outerHTML + updateButton.outerHTML + deleteButton.outerHTML;
+          return viewButton.outerHTML + updateButton.outerHTML;
         }
       }
     ];
