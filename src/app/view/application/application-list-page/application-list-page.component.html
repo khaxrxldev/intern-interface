@@ -9,7 +9,7 @@
     <div class="w-100 p-2 border-start border-5">
       <b>Company List</b>
     </div>
-    <div class="w-100 p-2 border-top bg-white">
+    <div class="w-100 p-2 border-top bg-white overflow-auto">
       <app-application-list-datatable #companyDatatable (onDisplayCompany)="companyModal.open(companyModal.childContent); company = $event" (onApply)="applyModal.open(applyModal.childContent); companyId.value = $event.companyId"></app-application-list-datatable>
     </div>
   </div>
@@ -17,7 +17,7 @@
     <div class="w-100 p-2 border-start border-5">
       <b>Application List</b>
     </div>
-    <div class="w-100 p-2 border-top bg-white">
+    <div class="w-100 p-2 border-top bg-white overflow-auto">
       <app-application-result-datatable #resultDatatable (onDisplayCompany)="companyModal.open(companyModal.childContent); company = $event.company" (onDisagree)="disagreeModal.open(disagreeModal.childContent); disagreeApplicationId.value = $event.applicationId" (onAgree)="agreeModal.open(agreeModal.childContent); agreeApplicationId.value = $event.applicationId"></app-application-result-datatable>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -18,6 +18,8 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
   dtElement!: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
+  
+  @Input() filterStatus!: string;
   
   @Output() onViewResult = new EventEmitter<any>();
   @Output() onEvaluate = new EventEmitter<any>();
@@ -86,7 +88,8 @@ export class StudentEvaluationDatatableComponent implements AfterViewInit, OnDes
     this.dtOptions.ajax = (dtParameters: any, callback) => {
       let studentEvaluation: StudentEvaluationRequest = {
         userLoginType: sessionStorage.getItem('userType') != 'COD' ? sessionStorage.getItem('userType')! : '',
-        studentMatricNum: this.activatedRoute.snapshot.paramMap.get("studentId")!
+        studentMatricNum: this.activatedRoute.snapshot.paramMap.get("studentId")!,
+        studentEvaluationStatus: this.filterStatus
       };
       let studentEvaluations: StudentEvaluationResponse[] = [];
       

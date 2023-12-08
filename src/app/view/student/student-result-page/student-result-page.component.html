@@ -29,7 +29,30 @@
       <!-- <app-button-group *ngIf="userType == 'COD'" (click)="evaluationModal.open(evaluationModal.childContent)" style="margin-top: -3px;" class="float-end" [btnTxt]="'Add'" [btnIcn]="'fa-plus'" [btnContentColor]="'#fff'" [btnBgClass]="'bg-primary'" [btnBorderClass]="'border-primary'"></app-button-group> -->
     </div>
     <div class="w-100 p-2 border-top overflow-auto bg-white">
-      <app-student-evaluation-datatable #datatable (onDelete)="deleteModal.open(deleteModal.childContent); deleteId.value = $event.studentEvaluationId" (onEvaluate)="questionModal.open(questionModal.childContent); onGetCompleteEvaluation($event.evaluationId, $event.studentEvaluationId); studentEvaluation = $event"></app-student-evaluation-datatable>
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-1">
+            <div class="row g-1">
+              <div class="col-lg-3 col-12">
+                <div class="input-group">
+                  <select #statusSelect [ngClass]="{'filter-success': statusSelect.value}" (change)="datatable.reRender()" class="form-select form-select-sm">
+                    <option value="" selected hidden>Status</option>
+                    <option value="INC">INCOMPLETE</option>
+                    <option value="CMP">COMPLETE</option>
+                  </select>
+                  <button [disabled]="!statusSelect.value" [ngClass]="{'filter-success': statusSelect.value}" (click)="statusSelect.value = ''; datatable.reRender()" class="input-group-text">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-9 col-12"></div>
+            </div>
+          </li>
+        </ul>
+        <div class="card-body p-1 overflow-auto">
+          <app-student-evaluation-datatable #datatable [filterStatus]="statusSelect.value" (onDelete)="deleteModal.open(deleteModal.childContent); deleteId.value = $event.studentEvaluationId" (onEvaluate)="questionModal.open(questionModal.childContent); onGetCompleteEvaluation($event.evaluationId, $event.studentEvaluationId); studentEvaluation = $event"></app-student-evaluation-datatable>
+        </div>
+      </div>
     </div>
   </div>
 </div>

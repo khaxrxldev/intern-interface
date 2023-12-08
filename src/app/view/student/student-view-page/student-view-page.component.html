@@ -3,7 +3,7 @@
     <!-- <h4 class="header m-0">Student Application</h4> -->
   </div>
   <!-- <div class="col-12 border-bottom bg-white"></div> -->
-  <div class="col-12 content-col-str border" [ngClass]="{'col-lg-5': userType != 'IND', 'col-lg-12': userType == 'IND'}">
+  <div class="col-12 content-col-str border" [ngClass]="{'col-lg-5': userType != 'IND' && userType != 'ACD', 'col-lg-12': userType == 'IND' || userType == 'ACD'}">
     <div class="w-100 p-2 border-start border-5">
       <b>Student Details</b>
     </div>
@@ -172,7 +172,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="userType != 'IND'" class="col-lg-7 col-12 content-col-end border">
+  <div *ngIf="userType != 'IND' && userType != 'ACD'" class="col-lg-7 col-12 content-col-end border">
     <div class="w-100 p-2 border-start border-5">
       <b>Application List</b>
     </div>
